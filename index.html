@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Local Weather</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+
+<body class="container">
+	<h2> Local Weather </h2>
+	<div class="weatherSection">
+		<div class="temperatureSection">
+			<img id="weatherIcon" src="" alt="Weather icon">
+			<p id="temperature">00°C</p>
+			<button class="btn btn-primary active btn-change">C/F</button>
+		</div>
+		<div class="otherInformation">
+			<div class="infoBlock">
+				<p id="nameCity"></p>
+			</div>
+			<div class="infoBlock">
+				<p id="weatherDescription"></p>
+			</div>
+			<div class="infoBlock">
+				<p id="windInfo"></p>
+			</div>
+		</div>
+	</div>
+	<script>
+		$(document).ready(function() {
+			showWeather();
+			$(".btn-change").on("click", function() {
+				changeTemp();
+			});
+		});
+
+		function showWeather() {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(function(position) {
+					$.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&APPID=3edd02e6040799429c7f443bd7b0f39a", function(a) {
+						var city = "";
+						var wind = "";
+						var description = "";
+						var temperature = "";
+						var iconUrl = "";
+						city += a.name + " <br> " + a.sys.country;
+						wind += "Speed: " + a.wind.speed + "km/h Degree: " + a.wind.deg;
+						description += a.weather[0].main + "<br> " + a.weather[0].description;
+						temperature += Math.round(a.main.temp - 273.15) + "°C";
+						iconUrl += "http://openweathermap.org/img/w/" + a.weather[0].icon + ".png";
+						changeBackground(a);
+						$("#nameCity").html(city);
+						$("#windInfo").html(wind);
+						$("#weatherDescription").html(description);
+						$("#temperature").html(temperature);
+						$("#weatherIcon").attr("src", iconUrl);
+					});
+				});
+			}
+		}
+
+		function changeTemp() {
+			var temp = $("#temperature").text();
+			var unit = temp.slice(temp.length - 2, temp.length);
+			var digit = parseInt(temp.slice(0, temp.length - 2));
+			if (unit == "°C") {
+				temp = (Math.round(digit + 273.15)) + "°F";
+			} else if (unit == "°F") {
+				temp = (Math.round(digit - 273.15)) + "°C";
+			} else {
+				console.error("Error");
+			}
+			$("#temperature").html(temp);
+		}
+
+		function changeBackground(a) {
+			if (a.main.temp >= 200) {
+				$("body").css("background-image", 'url("img/sunny.jpg")');
+			} else if (a.main.temp <= 199) {
+				$("body").css("background-image", 'url("img/cold.jpg")');
+			} else if (a.weather[0].main == "Snow") {
+				$("body").css("background-image", 'url("img/snow.jpg")');
+			} else {
+				$("body").css("background-image", 'url("img/sunny.jpg")');
+			}
+		}
+	</script>
+</body>
+
+</html>

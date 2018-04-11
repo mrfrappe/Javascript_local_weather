@@ -1,0 +1,52 @@
+body {
+  text-align: center;
+  background-color: rgba(126, 192, 238);
+  background-repeat: no-repeat;
+  color: rgba(255, 255, 255);
+}
+
+.weatherSection {
+  display: block;
+}
+
+.temperatureSection {
+  margin-top: 100px;
+  display: block;
+}
+
+.temperatureSection p {
+  font-weight: bold;
+  font-size: 50px;
+}
+
+.temperatureSection p, .temperatureSection#weatherIcon, .temperatureSection.btn-change {
+  display: inline;
+  margin-top: 10px;
+}
+
+.otherInformation {
+  display: block;
+}
+
+.infoBlock {
+  display: inline-block;
+  width: 150px;
+  height: 80px;
+  color: rgba(0, 0, 0);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  margin-left: 5px;
+}
+
+.infoBlock p {
+  padding-top: 20px;
+}
+
+#weatherIcon {
+  width: 100px;
+  height: 100px;
+}
+
+.btn-change {
+  margin-left: 20px;
+}
