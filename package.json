@@ -1,0 +1,34 @@
+{
+  "name": "Javascript_local_weather",
+  "version": "1.0.0",
+  "description": "[freecodecamp/show-the-local-weather](https://www.freecodecamp.org/challenges/show-the-local-weather)",
+  "main": "index.js",
+  "dependencies": {
+    "css-loader": "^3.2.0",
+    "jquery": "^3.4.1",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.0",
+    "unsplash-js": "^5.0.0",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^3.8.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "webpack-dev": "webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrfrappe/Javascript_local_weather.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrfrappe/Javascript_local_weather/issues"
+  },
+  "homepage": "https://github.com/mrfrappe/Javascript_local_weather#readme"
+}
