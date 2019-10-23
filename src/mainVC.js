@@ -6,18 +6,18 @@ appComponent.objectData = {};
 
 appComponent.init = function () {
 
-    $.getJSON('https://api.unsplash.com/search/photos?query=weather&client_id=0be411bbc18eab35251b44718f0590582b0f401b2a3bc6326bf46f16c67dd9b5', function (response) {
-        //   if error 
-        if (response === undefined || response.results.length === 0) {
-            return;
-        }
-        // if success
-        var backgrounImage = response.results[Math.floor((Math.random() * response.results.length) + 0)].urls.regular;
+    // $.getJSON('https://api.unsplash.com/search/photos?query=weather&client_id=0be411bbc18eab35251b44718f0590582b0f401b2a3bc6326bf46f16c67dd9b5', function (response) {
+    //     //   if error 
+    //     if (response === undefined || response.results.length === 0) {
+    //         return;
+    //     }
+    //     // if success
+    //     var backgrounImage = response.results[Math.floor((Math.random() * response.results.length) + 0)].urls.regular;
 
-        $('html').css({
-            'background-image': 'url(' + backgrounImage + ')',
-        });
-    })
+    //     $('html').css({
+    //         'background-image': 'url(' + backgrounImage + ')',
+    //     });
+    // })
 
 
     if (navigator.geolocation) {
@@ -39,7 +39,7 @@ appComponent.init = function () {
         })
     }
 
-    $('.button-settings').off('click').on('click', appComponent.onSettingClick);
+    $('[data-function="button-settings"]').off('click').on('click', appComponent.onSettingClick);
 }
 
 appComponent.onSettingClick = function () {

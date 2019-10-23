@@ -1,31 +1,102 @@
 <!doctype html>
 
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>WeatherAPP</title>
-  <link rel="stylesheet" type="text/css" href="dist\style.bundle.css"/>
+  <link rel="stylesheet" type="text/css" href="dist\style.bundle.css" />
 </head>
 
 <body>
   <div class="main">
     <div class="main__header">
-      <div class="header__logo"></div>
+      <div class="header__logo">weatherApp</div>
     </div>
     <div class="main__body">
       <div class="body__wrapper">
-          <div class="body__wrapper--today-data">
-            <div class="weather__info--city">warsaw</div>
-            <div class="weather__info--data">4November</div>
-            <div class="weather__info--"></div>
+        <div class="body__wrapper--header">
+          <div class="weather-info__city">London</div>
+          <div class="weather-info__date">November 10</div>
+        </div>
+        <div class="body__wrapper--body">
+          <div class="weather-info__today-data">
+            <div class="today-data">
+                <div class="today-data__header">
+                    <div class="today-data--degree">1°C</div>
+                    <div class="today-data-details">
+                        <div class="today-data-details--rain"><i class="fas fa-cloud-rain"></i> Rain</div>
+                        <div class="today-data-details--wind"><i class="fas fa-wind"></i>Wind</div>
+                        <div class="today-data-details--humidity"><i class="fas fa-tint"></i>Humidity</div>
+                        <div class="today-data-details--uv-index"><i class="fas fa-sort-amount-down"></i>UX index</div>
+                    </div>
+                </div>
+                <div class="today-data__body">
+                    <div class="today-data-details">
+                        <div class="today-data-details--rain"></div>
+                        <div class="today-data-details--wind"></div>
+                        <div class="today-data-details--humidity"></div>
+                        <div class="today-data-details--uv-index"></div>
+                    </div>
+                </div>
+
+            </div>
           </div>
-          <div class="body__wrapper--week-data"></div>
+          <div class="weather-info__week-data">
+            <div class="day-tile-group--arrow day-tile-group--left"><i class="fas fa-angle-left"></i></div>
+            <div class="day-tile-group--list">
+              <div class="day-tile">
+                <div class="day-tile--wrapper">
+                  <div class="day-tile__header"> November 11</div>
+                  <div class="day-tile__body">
+                    <div class='day-tile__body--degree'>13°C</div>
+                    <div class='day-tile__body--icon'></div>
+                  </div>
+                  <div class="day-tile__footer"></div>
+                </div>
+              </div>
+              <div class="day-tile">
+                <div class="day-tile--wrapper">
+                  <div class="day-tile__header"></div>
+                  <div class="day-tile__body">
+                    <div class='day-tile__body--degree'></div>
+                    <div class='day-tile__body--icon'></div>
+                  </div>
+                  <div class="day-tile__footer"></div>
+                </div>
+              </div>
+              <div class="day-tile">
+                <div class="day-tile--wrapper">
+                  <div class="day-tile__header"></div>
+                  <div class="day-tile__body">
+                    <div class='day-tile__body--degree'></div>
+                    <div class='day-tile__body--icon'></div>
+                  </div>
+                  <div class="day-tile__footer"></div>
+                </div>
+              </div>
+              <div class="day-tile">
+                <div class="day-tile--wrapper">
+                  <div class="day-tile__header"></div>
+                  <div class="day-tile__body">
+                    <div class='day-tile__body--degree'></div>
+                    <div class='day-tile__body--icon'></div>
+                  </div>
+                  <div class="day-tile__footer"></div>
+                </div>
+              </div>
+            </div>
+            <div class="day-tile-group--arrow day-tile-group--right"><i class="fas fa-angle-right"></i></div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="main__footer">
-      <div class="footer__button"><button class="button-settings">Settings</button></div>
+      <div class="button-settings"><i class="fas fa-cog" data-function="button-settings"></i></div>
     </div>
   </div>
   <script src="./dist/main.bundle.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.11.2/js/all.js" data-auto-replace-svg="nest"></script>
 </body>
+
 </html>

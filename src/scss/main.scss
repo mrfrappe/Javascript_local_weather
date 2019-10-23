@@ -1,33 +1,210 @@
 html {
-    height: 100%;
-    background-image: url('https://images.unsplash.com/photo-1534088568595-a066f410bcda?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjk0NTY1fQ');
+    // height: 100%;
+    // background-image: url('https://images.unsplash.com/photo-1534088568595-a066f410bcda?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjk0NTY1fQ');
+    background-image: url('../src/img/background.jpg');
     background-repeat: no-repeat;
-    background-size: cover;
+    background-position: center;
+    background-size: auto;
+    height: 100%;
+    overflow: hidden;
 }
 
 .main {
-    &__header {}
+    &__header {
+        .header__logo {
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    }
 
-    &__body {}
+    &__body {
+        width: 100%;
+        position: absolute;
+        left: 40px;
+        top: 30%;
+    }
 
-    &__footer {}
+    &__footer {
+        .button-settings {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+
+            i {
+                color: #fff;
+                font-size: 25px;
+                font-weight: bold;
+                cursor: pointer;
+                ;
+            }
+        }
+    }
 
     .body {
         &__wrapper {
+            &--header {
+                .weather-info {
+                    &__city {
+                        color: #fff;
+                        font-size: 70px;
+                        font-weight: bold;
+                    }
 
-            .weather__info {
-                &--city {
-                    color: #fff;
-                    font-size: 50px;
-                    font-weight: bold;
+                    &__date {
+                        color: #fff;
+                        font-size: 20px;
+                        font-weight: bold;
+                    }
                 }
-
-                &--data {}
             }
 
-            &--today-data {}
+            &--body {
+                margin-top: 20px;
 
-            &--week-data {}
+                .weather-info {
+                    &__today-data {
+                        width: 1040px;
+                        height: 250px;
+                        background: rgba(255, 255, 255, 0.2);
+                        border-radius: 10px;
+                        display: flex;
+                        align-items: center;
+
+                        .today-data {
+                            display: flex;
+                            padding-left: 20px;
+                            width: 100%;
+                            &__header {
+                                display: flex;
+                                width: 100%;
+
+                                .today-data--degree {
+                                    color: #fff;
+                                    font-size: 150px;
+                                    font-weight: bold;
+                                }
+
+                                .today-data-details {
+                                    display: flex;
+                                    color: #fff;
+                                    margin-left: 150px;
+                                    height: 20px;
+
+                                    i {
+                                        color: #fff;
+                                        padding-right: 5px;
+                                    }
+                                    &--rain {
+                                        width: 125px;
+                                        border-right: 1px solid #fff;
+                                        text-align: center;
+                                    }
+
+                                    &--wind {
+                                        width: 125px;
+                                        border-right: 1px solid #fff;
+                                        text-align: center;
+                                    }
+
+                                    &--humidity {
+                                        width: 125px;
+                                        border-right: 1px solid #fff;
+                                        text-align: center;
+                                    }
+
+                                    &--uv-index {
+                                        width: 150px;
+                                        text-align: center;
+                                    }
+                                }
+
+                            }
+
+                            &__body {}
+                        }
+
+                    }
+
+                    &__week-data {
+                        display: flex;
+                        margin-top: 20px;
+
+
+                        .day-tile-group--list {
+                            display: flex;
+                        }
+
+                        .day-tile-group--arrow {
+                            width: 100px;
+                            display: flex;
+                            align-items: center;
+                        }
+
+                        .day-tile-group--right {
+                            flex-direction: row-reverse;
+                        }
+
+                        .day-tile {
+                            width: 200px;
+                            height: 150px;
+                            background: rgba(255, 255, 255, 0.2);
+                            border-radius: 10px;
+                            margin-right: 10px;
+                            &--wrapper {
+                                display: flex;
+                                flex-direction: column;
+                                height: 100%;
+                            }
+
+                            &__header {
+                                color: #fff;
+                                font-size: 20px;
+                                line-height: 20px;
+                                margin-top: 10px;
+                                font-weight: bold;
+                                padding-left: 10px;
+                                flex-grow: 1;
+                                height: 50px;
+                            }
+
+                            &__body {
+                                display: flex;;
+                                flex-grow: 99;
+                                &--degree {
+                                    font-size: 50px;
+                                    padding-left: 10px;
+                                    font-weight: bold;;
+                                    color: #fff;
+                                    display: flex;
+                                    align-items: center;
+                                }
+                                &--icon {
+
+                                }
+                            }
+                            &__footer {
+                                flex-grow: 1;
+                                height: 50px;
+                            }
+
+                        }
+
+                        i {
+                            color: #fff;
+                            font-size: 50px;
+                            cursor: pointer;
+
+                        }
+
+                        i:nth-child(2) {
+                            display: flex;
+                            flex-direction: row-reverse;
+                        }
+                    }
+                }
+            }
+
         }
 
     }
