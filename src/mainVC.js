@@ -1,6 +1,5 @@
-import $ from 'jquery';
+import $ from 'jquery';  
 import settingsVC from './modals/settingsVC';
-// import Unsplash from 'unsplash-js';
 
 var appComponent = {};
 appComponent.objectData = {};
