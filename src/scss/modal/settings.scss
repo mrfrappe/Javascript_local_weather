@@ -1,0 +1,61 @@
+.modal-settings {
+    height: 100%;
+
+    .modal-dialog {
+        width: 600px;
+    }
+
+    .modal-content {
+
+    }
+
+    .modal-header {
+
+    }
+    .modal-body {
+        height: 750px;
+        display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+        
+
+    }
+    .modal-footer {
+
+    }
+
+    .row {
+
+        .input-section {
+            display: flex;
+            justify-content: space-between;
+
+            &__label {
+
+            }
+            &__input {
+
+            }
+        }
+        .dropdown {
+            display: flex;
+            justify-content: space-between;
+
+            button {
+                width: 178px;
+                height: 30px;
+                line-height: 17px;
+            }
+
+        }
+        .carousel-section {
+            display: flex;
+            flex-direction: column;
+
+            .carousel {
+                min-height: 473px;;
+            }
+        }
+
+    }
+}

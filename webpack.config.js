@@ -1,5 +1,6 @@
 require('babel-polyfill');
 require('whatwg-fetch');
+require('bootstrap');
 
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -48,6 +49,10 @@ module.exports = {
     // new webpack.ProvidePlugin({
     //      $: "jquery",
     //      jQuery: "jquery"
-    //  })
+    //  }),
+  //   new webpack.ProvidePlugin({
+  //     $: "jquery",
+  //     jQuery: "jquery"
+  // })
   ]
 };
