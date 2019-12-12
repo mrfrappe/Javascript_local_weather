@@ -6,6 +6,8 @@ import 'bootstrap';
 var appComponent = {};
 appComponent.objectData = {};
 appComponent.$main = $('.body__wrapper');
+appComponent.unit = "Celcius";
+appComponent.city = "London";
 appComponent.APPID = '3edd02e6040799429c7f443bd7b0f39a'
 
 appComponent.init = function () {
@@ -23,7 +25,8 @@ appComponent.init = function () {
                     return;
                 }
                 //if success
-                appComponent.objectData = response
+                appComponent.objectData = response;
+                appComponent.city = appComponent.objectData.name;
 
                    appComponent.get5DaysForecast(position);
 
@@ -56,7 +59,7 @@ appComponent.init = function () {
 appComponent.appendData = function () {
 
     // header info
-    appComponent.$main.find('.weather-info__city').text(appComponent.objectData.name);
+    appComponent.$main.find('.weather-info__city').text(appComponent.city);
     appComponent.$main.find('.weather-info__date').text(moment().format('MMMM Do'));
 
     // this day data
@@ -101,7 +104,7 @@ appComponent.appendData = function () {
 };
 
 appComponent.onSettingClick = function () {
-    settingsVC.initView();
+    settingsVC.initView(appComponent);
 }
 
 appComponent.get5DaysForecast = function (position) {

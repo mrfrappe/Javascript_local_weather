@@ -2,7 +2,7 @@
     height: 100%;
 
     .modal-dialog {
-        width: 600px;
+        max-width: 600px;
     }
 
     .modal-content {
@@ -13,7 +13,7 @@
 
     }
     .modal-body {
-        height: 750px;
+        height: 550px;
         display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -53,7 +53,7 @@
             flex-direction: column;
 
             .carousel {
-                min-height: 473px;;
+                min-height: 280px;;
             }
         }
 

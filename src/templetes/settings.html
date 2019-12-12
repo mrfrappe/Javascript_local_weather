@@ -14,16 +14,6 @@
                     <div class="col-8">
                         <div class="input-section">
                             <div class="input-section__label"> Choose units</div>
-                            <div class="input-section__input"><input type="text"></div>
-                        </div>
-                    </div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8">
-                        <div class="input-section">
-                            <div class="input-section__label"> Search city </div>
                             <div class="input-section__input">
                                 <div class="dropdown">
                                     <button class="btn btn-secondary dropdown-toggle" type="button"
@@ -37,6 +27,18 @@
                                         <a class="dropdown-item" href="#">Fahrenheit</a>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <div class="input-section">
+                            <div class="input-section__label"> Search city </div>
+                            <div class="input-section__input">
+                                <input type="text" data-function="current-city">
                             </div>
                         </div>
                     </div>
@@ -60,7 +62,7 @@
                                     <span class="sr-only">Next</span>
                                 </a>
                             </div>
-                            <button>Set background</button>
+                            <button data-function="set-background">Set background</button>
                         </div>
                     </div>
                     <div class="col-2"></div>
@@ -68,7 +70,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" data-function="save-settings" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>

@@ -2,10 +2,10 @@ import $ from 'jquery';
 
 var settingsVC = {}
 settingsVC.photosCollection = [];
+settingsVC.appComponent = '';
 
-settingsVC.initView = function () {
-    console.log("settings")
-
+settingsVC.initView = function (appComponent) {
+    settingsVC.appComponent = appComponent
 
     //work on webserver
     // $('body').load('./templates/settingModal.html');
@@ -13,18 +13,34 @@ settingsVC.initView = function () {
     var $modal = $(settingsVC.modalTpl);
     $('body').append($modal);
 
-    // $('#modal-settings')
+    settingsVC.appendData();
 
-    settingsVC.getPhoto();
+    settingsVC.getPhotos();
+
+    // set events
+
+    $('#modal-settings').find('.dropdown-item').off('click').on('click', settingsVC.changeUnit);
+
+    $('#modal-settings').find('[data-function="current-city"]').off('input').on('input', function(e){
+
+    console.log(e.target.value)
+
+    });
+
+    $('#modal-settings').find('[data-function="set-background"]').off('click').on('click', settingsVC.changeBackground);
+
+    $('#modal-settings').find('[data-function="save-settings"').off('click').on('click', settingsVC.onSaveClick);
+
 
 
     $('#modal-settings').modal('show');
 
 
 };
-settingsVC.getPhoto = function () {
+
+settingsVC.getPhotos = function (e) {
     
-    $.getJSON('https://api.unsplash.com/search/photos?query=weather&client_id=0be411bbc18eab35251b44718f0590582b0f401b2a3bc6326bf46f16c67dd9b5', function (response) {
+    $.getJSON('https://api.unsplash.com/search/photos?query=weather?w=400&h=400&fit=crop&client_id=0be411bbc18eab35251b44718f0590582b0f401b2a3bc6326bf46f16c67dd9b5&orientation=landscape', function (response) {
         //   if error 
         if (response === undefined || response.results.length === 0) {
             return;
@@ -49,24 +65,29 @@ settingsVC.getPhoto = function () {
         //     'background-image': 'url(' + backgrounImage + ')',
         // });
     })
-}
+};
 
-settingsVC.changeUnit = function () {
+settingsVC.appendData = function () {
+    $('#modal-settings').find('.droppdown').text(settingsVC.appComponent.unit);
+    $('#modal-settings').find('[data-function="current-city"]').val(settingsVC.appComponent.city)
+};
+
+settingsVC.changeUnit = function (e) {
 
 };
 
-settingsVC.changeCity = function () {
+settingsVC.changeCity = function (e) {
 
 };
 
-settingsVC.changeBackground = function () {
+settingsVC.changeBackground = function (e) {
 
 };
 
-// 
-// edit units
-// edit city
-// change background
+settingsVC.onSaveClick = function (e) {
+
+};
+
 // change colorss
 // cookies
 
@@ -87,7 +108,20 @@ settingsVC.modalTpl =
 '<div class="col-8">'+
 '<div class="input-section">'+
 '<div class="input-section__label"> Choose units</div>'+
-'<div class="input-section__input"><input type="text"></div>'+
+'<div class="input-section__input">'+
+'<div class="dropdown">'+
+'<button class="btn btn-secondary dropdown-toggle" type="button"'+
+'id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"'+
+'aria-expanded="false">'+
+'Units'+
+'</button>'+
+'<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">'+
+'<a class="dropdown-item" href="#">Celcius</a>'+
+'<a class="dropdown-item" href="#">Kelvinn</a>'+
+'<a class="dropdown-item" href="#">Fahrenheit</a>'+
+'</div>'+
+'</div>'+
+'</div>'+
 '</div>'+
 '</div>'+
 '<div class="col-2"></div>'+
@@ -98,18 +132,7 @@ settingsVC.modalTpl =
 '<div class="input-section">'+
 '<div class="input-section__label"> Search city </div>'+
 '<div class="input-section__input">'+
-'<div class="dropdown">'+
-'<button class="btn btn-secondary dropdown-toggle" type="button"'+
-'id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"'+
-'aria-expanded="false">'+
-'Dropdown button'+
-'</button>'+
-'<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">'+
-'<a class="dropdown-item" href="#">Action</a>'+
-'<a class="dropdown-item" href="#">Another action</a>'+
-'<a class="dropdown-item" href="#">Something else here</a>'+
-'</div>'+
-'</div>'+
+'<input type="text" data-function="current-city">'+
 '</div>'+
 '</div>'+
 '</div>'+
@@ -133,7 +156,7 @@ settingsVC.modalTpl =
 '<span class="sr-only">Next</span>'+
 '</a>'+
 '</div>'+
-'<button>Set background</button>'+
+'<button data-function="set-background">Set background</button>'+
 '</div>'+
 '</div>'+
 '<div class="col-2"></div>'+
@@ -141,7 +164,7 @@ settingsVC.modalTpl =
 '</div>'+
 '<div class="modal-footer">'+
 '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>'+
-'<button type="button" class="btn btn-primary">Save</button>'+
+'<button type="button" class="btn btn-primary" data-function="save-settings">Save</button>'+
 '</div>'+
 '</div>'+
 '</div>'+
