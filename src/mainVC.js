@@ -1,4 +1,4 @@
-import $ from 'jquery';  
+import $ from 'jquery';
 import settingsVC from './modals/settingsVC';
 import moment from 'moment';
 import 'bootstrap';
@@ -6,9 +6,13 @@ import 'bootstrap';
 var appComponent = {};
 appComponent.objectData = {};
 appComponent.$main = $('.body__wrapper');
-appComponent.unit = "Celcius";
-appComponent.city = "London";
 appComponent.APPID = '3edd02e6040799429c7f443bd7b0f39a'
+
+appComponent.defaultSettings = {
+    unit: 'Celcius',
+    city: 'London',
+    background: '../Javascript_local_weather/src/img/background.jpg'
+}
 
 appComponent.init = function () {
 
@@ -26,44 +30,51 @@ appComponent.init = function () {
                 }
                 //if success
                 appComponent.objectData = response;
-                appComponent.city = appComponent.objectData.name;
+                appComponent.defaultSettings.city = appComponent.objectData.name;
 
-                   appComponent.get5DaysForecast(position);
+                appComponent.get5DaysForecast(position);
 
-                   appComponent.getUviData(position)
+                appComponent.getUviData(position)
 
 
-               setTimeout(function() {
-                appComponent.appendData()
-            },3000)
+                setTimeout(function () {
+                    appComponent.appendData()
+                }, 3000)
             });
         })
     }
 
     $('[data-function="button-settings"]').off('click').on('click', appComponent.onSettingClick);
 
-    $('.day-tile-group--left').off('click').on('click', function() {
+    $('.day-tile-group--left').off('click').on('click', function () {
 
         $('.day-tile-group--list').find('.day-tile').last().css('display', 'none');
         $('.day-tile-group--list').find('.day-tile').first().css('display', 'flex');
 
     })
 
-    $('.day-tile-group--right').off('click').on('click', function() {
+    $('.day-tile-group--right').off('click').on('click', function () {
         $('.day-tile-group--list').find('.day-tile').first().css('display', 'none');
         $('.day-tile-group--list').find('.day-tile').last().css('display', 'flex');
-        
+
     })
 }
 
 appComponent.appendData = function () {
 
     // header info
-    appComponent.$main.find('.weather-info__city').text(appComponent.city);
+    appComponent.$main.find('.weather-info__city').text(appComponent.defaultSettings.city);
     appComponent.$main.find('.weather-info__date').text(moment().format('MMMM Do'));
 
     // this day data
-    $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp) + '°C');
+    if (appComponent.defaultSettings.unit === "Celcius") {
+        $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp) + '°C');
+    } else if (appComponent.defaultSettings.unit === "Kelvin") {
+        $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp) + '°K');
+    } else {
+        $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp) + '°F');
+
+    }
 
     var $details = appComponent.$main.find('.today-data__body');
 
@@ -77,22 +88,22 @@ appComponent.appendData = function () {
         $details.find('.today-data-details--wind').text(appComponent.objectData.wind.speed + 'km/h');
     }
 
-    if (appComponent.objectData.uvi){
+    if (appComponent.objectData.uvi) {
         $details.find('.today-data-details--uv-index').text(appComponent.objectData.uvi.value)
     }
 
     // next 5 days
-    if (appComponent.objectData.forecast){
+    if (appComponent.objectData.forecast) {
 
-        var simpleData = $.grep(appComponent.objectData.forecast, function(weatherData, index){
+        var simpleData = $.grep(appComponent.objectData.forecast, function (weatherData, index) {
             return moment(weatherData.dt_txt).format('HH:mm:ss') == "06:00:00"
         })
 
         $('.day-tile-group--list').html('');
 
-        $.each(simpleData, function(index, weatherData){
-            var $dayTpl =  appComponent.makeDayTile(weatherData);
-            
+        $.each(simpleData, function (index, weatherData) {
+            var $dayTpl = appComponent.makeDayTile(weatherData);
+
             $('.day-tile-group--list').append($dayTpl);
 
         });
@@ -109,7 +120,7 @@ appComponent.onSettingClick = function () {
 
 appComponent.get5DaysForecast = function (position) {
     appComponent.objectData.forecast = {};
-    
+
     var url = "http://api.openweathermap.org/data/2.5/forecast?lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&APPID=" + appComponent.APPID + '&units=metric';
     $.getJSON(url, function (response) {
         //if success
@@ -121,7 +132,7 @@ appComponent.get5DaysForecast = function (position) {
 
 appComponent.getUviData = function (position) {
     appComponent.objectData.uvi = {};
-    
+
     var url = "http://api.openweathermap.org/data/2.5/uvi?lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&APPID=" + appComponent.APPID + '&units=metric';
     $.getJSON(url, function (response) {
         //if success
@@ -134,25 +145,36 @@ appComponent.getUviData = function (position) {
 appComponent.makeDayTile = function (weatherData) {
     var $dayTpl = $(appComponent.dayTileTpl);
 
-    $dayTpl.find('.day-tile__header').text(moment(weatherData.dt_txt).format('MMMM Do'))
-    $dayTpl.find('.day-tile__body--degree').text(Math.round(weatherData.main.temp) + '°C');
-    $dayTpl.find('.day-tile__body--icon').html('<img class="weather-widget__img" src="https://openweathermap.org/img/wn/'+ appComponent.objectData.weather[0].icon +'.png" width="50" height="50">');
+    $dayTpl.find('.day-tile__header').text(moment(weatherData.dt_txt).format('MMMM Do'));
+
+    if (appComponent.defaultSettings.unit === "Celcius") {
+        $dayTpl.find('.day-tile__body--degree').text(Math.round(weatherData.main.temp) + '°C');
+
+    } else if (appComponent.defaultSettings.unit === "Kelvin") {
+        $dayTpl.find('.day-tile__body--degree').text(Math.round(weatherData.main.temp) + '°K');
+
+    } else {
+        $dayTpl.find('.day-tile__body--degree').text(Math.round(weatherData.main.temp) + '°F');
+
+
+    }
+    $dayTpl.find('.day-tile__body--icon').html('<img class="weather-widget__img" src="https://openweathermap.org/img/wn/' + appComponent.objectData.weather[0].icon + '.png" width="50" height="50">');
 
 
     return $dayTpl
 }
 
-appComponent.dayTileTpl = 
-'<div class="day-tile">'+
-'<div class="day-tile--wrapper">'+
-'  <div class="day-tile__header"></div>'+
-'  <div class="day-tile__body">'+
-'    <div class="day-tile__body--degree"></div>'+
-'    <div class="day-tile__body--icon"></div>'+
-'  </div>'+
-'  <div class="day-tile__footer"></div>'+
-'</div>'+
-'</div>'
+appComponent.dayTileTpl =
+    '<div class="day-tile">' +
+    '<div class="day-tile--wrapper">' +
+    '  <div class="day-tile__header"></div>' +
+    '  <div class="day-tile__body">' +
+    '    <div class="day-tile__body--degree"></div>' +
+    '    <div class="day-tile__body--icon"></div>' +
+    '  </div>' +
+    '  <div class="day-tile__footer"></div>' +
+    '</div>' +
+    '</div>'
 
 appComponent.init();
 

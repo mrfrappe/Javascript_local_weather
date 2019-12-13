@@ -1,6 +1,6 @@
 require('babel-polyfill');
 require('whatwg-fetch');
-require('bootstrap');
+// require('bootstrap');
 
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
