@@ -15,6 +15,14 @@ appComponent.defaultSettings = {
 }
 
 appComponent.init = function () {
+    if (document.cookie.length === 0) {
+        appComponent.defaultSettings = {
+            unit: document.cookie.replace(/(?:(?:^|.*;\s*)unit\s*\=\s*([^;]*).*$)|^.*$/, "$1");,
+            city: document.cookie.replace(/(?:(?:^|.*;\s*)city\s*\=\s*([^;]*).*$)|^.*$/, "$1");,
+            background: document.cookie.replace(/(?:(?:^|.*;\s*)background\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        }
+    }
+
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
