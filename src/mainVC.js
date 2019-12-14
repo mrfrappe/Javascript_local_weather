@@ -15,6 +15,7 @@ appComponent.defaultSettings = {
 }
 
 appComponent.init = function () {
+
     if (document.cookie.match(/^(.*;)?\s*unit\s*=\s*[^;]+(.*)?$/)) {
         appComponent.defaultSettings.unit = document.cookie.replace(/(?:(?:^|.*;\s*)unit\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     }
@@ -25,25 +26,20 @@ appComponent.init = function () {
         appComponent.defaultSettings.background = document.cookie.replace(/(?:(?:^|.*;\s*)background\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     }
 
-
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
 
-            var url = "http://api.openweathermap.org/data/2.5/weather?lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&APPID=" + appComponent.APPID + '&units=metric';
+            var url = "http://api.openweathermap.org/data/2.5/weather?lat=" +
+                position.coords.latitude + "&lon=" +
+                position.coords.longitude + "&APPID=" +
+                appComponent.APPID + '&units=metric';
             $.getJSON(url, function (response) {
 
-                // if error
-
-                if (response.cod !== 200) {
-                    alert('')
-                    return;
-                }
                 //if success
                 appComponent.objectData = response;
                 appComponent.defaultSettings.city = appComponent.objectData.name;
 
                 appComponent.get5DaysForecast(position).then(() => {
-
                     appComponent.getUviData(position).then(() => {
                         appComponent.appendData()
                     })
@@ -108,7 +104,7 @@ appComponent.appendData = function () {
 
         var simpleData = $.grep(appComponent.objectData.forecast, function (weatherData, index) {
 
-            return moment(weatherData.dt_txt).format('HH:mm:ss') == "05:00:00"
+            return moment(weatherData.dt_txt).format('HH:mm:ss') == "05:00:00" || moment(weatherData.dt_txt).format('HH:mm:ss') == "06:00:00"
         })
 
         if (simpleData !== []) {
@@ -138,12 +134,19 @@ appComponent.get5DaysForecast = function (position) {
 
         appComponent.objectData.forecast = {};
 
-        var url = "http://api.openweathermap.org/data/2.5/forecast?lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&APPID=" + appComponent.APPID + '&units=metric';
+        var url = "http://api.openweathermap.org/data/2.5/forecast?lat=" +
+            position.coords.latitude + "&lon=" +
+            position.coords.longitude + "&APPID=" +
+            appComponent.APPID + '&units=metric';
         $.getJSON(url, function (response) {
-            //if success
+
+            //if error 
+            if ('200' !== response.cod) {
+                reject(console.log('error001'))
+            }
             appComponent.objectData.forecast = response.list;
 
-            resolve(appComponent.objectData)
+            resolve(response)
 
         });
     })
@@ -155,12 +158,16 @@ appComponent.getUviData = function (position) {
 
         appComponent.objectData.uvi = {};
 
-        var url = "http://api.openweathermap.org/data/2.5/uvi?lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&APPID=" + appComponent.APPID + '&units=metric';
+        var url = "http://api.openweathermap.org/data/2.5/uvi?lat=" +
+            position.coords.latitude + "&lon=" +
+            position.coords.longitude + "&APPID=" +
+            appComponent.APPID + '&units=metric';
         $.getJSON(url, function (response) {
+
             //if success
             appComponent.objectData.uvi = response;
 
-            resolve(appComponent.objectData)
+            resolve(response)
 
 
         });
@@ -202,6 +209,5 @@ appComponent.dayTileTpl =
     '</div>' +
     '</div>'
 
-appComponent.init();
 
 export default appComponent;

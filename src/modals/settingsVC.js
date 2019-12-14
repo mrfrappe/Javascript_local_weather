@@ -29,12 +29,16 @@ settingsVC.initView = function (appComponent) {
 
         $('#modal-settings').find('[data-function="current-city"]').off('input').on('input', function (e) {
 
-    
-            $.get('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + e.target.value +
-            '&types=(cities)&language=pt_BR&key=AIzaSyD9GWnu5651bNqfAsdrcc58bmSOGdu4RsQ', function(response){
-                console.log(response)
-
-            });
+            $.ajax({
+                url: 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + e.target.value +
+                '&types=(cities)&language=pt_BR&key=AIzaSyD9GWnu5651bNqfAsdrcc58bmSOGdu4RsQ', 
+                type: "GET",   
+                dataType: 'jsonp',
+                cache: false,
+                success: function(response){                          
+                    alert(response);                   
+                }           
+            });  
 
         });
 
