@@ -159,7 +159,6 @@ settingsVC.modalTpl =
     '</button>' +
     '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">' +
     '<a class="dropdown-item" href="#">Celcius</a>' +
-    '<a class="dropdown-item" href="#">Kelvin</a>' +
     '<a class="dropdown-item" href="#">Fahrenheit</a>' +
     '</div>' +
     '</div>' +
@@ -198,7 +197,7 @@ settingsVC.modalTpl =
     '<span class="sr-only">Next</span>' +
     '</a>' +
     '</div>' +
-    '<button data-function="set-background">Set background</button>' +
+    '<button class="btn btn-primary" data-function="set-background">Set background</button>' +
     '</div>' +
     '</div>' +
     '<div class="col-2"></div>' +

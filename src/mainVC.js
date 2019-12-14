@@ -32,14 +32,14 @@ appComponent.init = function () {
                 appComponent.objectData = response;
                 appComponent.defaultSettings.city = appComponent.objectData.name;
 
-                appComponent.get5DaysForecast(position);
+                appComponent.get5DaysForecast(position).then(() => {
 
-                appComponent.getUviData(position)
+                    appComponent.getUviData(position).then(() => {
+                        appComponent.appendData()
+                    })
 
+                })
 
-                setTimeout(function () {
-                    appComponent.appendData()
-                }, 3000)
             });
         })
     }
@@ -62,6 +62,7 @@ appComponent.init = function () {
 
 appComponent.appendData = function () {
 
+
     // header info
     appComponent.$main.find('.weather-info__city').text(appComponent.defaultSettings.city);
     appComponent.$main.find('.weather-info__date').text(moment().format('MMMM Do'));
@@ -70,16 +71,16 @@ appComponent.appendData = function () {
     if (appComponent.defaultSettings.unit === "Celcius") {
         $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp) + '°C');
     } else if (appComponent.defaultSettings.unit === "Kelvin") {
-        $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp) + '°K');
+        $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp * 274.15) + '°K');
     } else {
-        $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp) + '°F');
+        $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp * 33.8) + '°F');
 
     }
 
     var $details = appComponent.$main.find('.today-data__body');
 
     $details.find('.today-data-details--humidity').text(appComponent.objectData.main.humidity + '%');
-    appComponent.$main.find('.today-data__header').find('.today-data-details--rain').append(appComponent.objectData.weather[0].main)
+    appComponent.$main.find('.today-data__header').find('.today-data-details--rain').html('<i class="fas fa-info-circle"></i>' + appComponent.objectData.weather[0].main)
     $details.find('.today-data-details--rain').text(appComponent.objectData.weather[0].description)
 
 
@@ -96,17 +97,20 @@ appComponent.appendData = function () {
     if (appComponent.objectData.forecast) {
 
         var simpleData = $.grep(appComponent.objectData.forecast, function (weatherData, index) {
-            return moment(weatherData.dt_txt).format('HH:mm:ss') == "06:00:00"
+
+            return moment(weatherData.dt_txt).format('HH:mm:ss') == "05:00:00"
         })
 
-        $('.day-tile-group--list').html('');
+        if (simpleData !== []){
+            $('.day-tile-group--list').html('');
 
-        $.each(simpleData, function (index, weatherData) {
-            var $dayTpl = appComponent.makeDayTile(weatherData);
-
-            $('.day-tile-group--list').append($dayTpl);
-
-        });
+            $.each(simpleData, function (index, weatherData) {
+                var $dayTpl = appComponent.makeDayTile(weatherData);
+    
+                $('.day-tile-group--list').append($dayTpl);
+    
+            });
+        }
 
         $('.day-tile').last().css('display', 'none');
 
@@ -119,26 +123,38 @@ appComponent.onSettingClick = function () {
 }
 
 appComponent.get5DaysForecast = function (position) {
-    appComponent.objectData.forecast = {};
 
-    var url = "http://api.openweathermap.org/data/2.5/forecast?lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&APPID=" + appComponent.APPID + '&units=metric';
-    $.getJSON(url, function (response) {
-        //if success
-        appComponent.objectData.forecast = response.list
+    return new Promise((resolve, reject) => {
 
-    });
+        appComponent.objectData.forecast = {};
+
+        var url = "http://api.openweathermap.org/data/2.5/forecast?lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&APPID=" + appComponent.APPID + '&units=metric';
+        $.getJSON(url, function (response) {
+            //if success
+            appComponent.objectData.forecast = response.list;
+
+            resolve(appComponent.objectData)
+
+        });
+    })
 
 }
 
 appComponent.getUviData = function (position) {
-    appComponent.objectData.uvi = {};
+    return new Promise((resolve, reject) => {
 
-    var url = "http://api.openweathermap.org/data/2.5/uvi?lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&APPID=" + appComponent.APPID + '&units=metric';
-    $.getJSON(url, function (response) {
-        //if success
-        appComponent.objectData.uvi = response
+        appComponent.objectData.uvi = {};
 
-    });
+        var url = "http://api.openweathermap.org/data/2.5/uvi?lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&APPID=" + appComponent.APPID + '&units=metric';
+        $.getJSON(url, function (response) {
+            //if success
+            appComponent.objectData.uvi = response;
+
+            resolve(appComponent.objectData)
+
+
+        });
+    })
 
 }
 
@@ -151,10 +167,10 @@ appComponent.makeDayTile = function (weatherData) {
         $dayTpl.find('.day-tile__body--degree').text(Math.round(weatherData.main.temp) + '°C');
 
     } else if (appComponent.defaultSettings.unit === "Kelvin") {
-        $dayTpl.find('.day-tile__body--degree').text(Math.round(weatherData.main.temp) + '°K');
+        $dayTpl.find('.day-tile__body--degree').text(Math.round(weatherData.main.temp * 274.15) + '°K');
 
     } else {
-        $dayTpl.find('.day-tile__body--degree').text(Math.round(weatherData.main.temp) + '°F');
+        $dayTpl.find('.day-tile__body--degree').text(Math.round(weatherData.main.temp * 33.8) + '°F');
 
 
     }
