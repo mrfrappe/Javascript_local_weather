@@ -16,13 +16,13 @@ appComponent.defaultSettings = {
 
 appComponent.init = function () {
     if (document.cookie.match(/^(.*;)?\s*unit\s*=\s*[^;]+(.*)?$/)) {
-        appComponent.defaultSettings.unit: document.cookie.replace(/(?:(?:^|.*;\s*)unit\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        appComponent.defaultSettings.unit = document.cookie.replace(/(?:(?:^|.*;\s*)unit\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     }
     if (document.cookie.match(/^(.*;)?\s*city\s*=\s*[^;]+(.*)?$/)) {
-        appComponent.defaultSettings.city: document.cookie.replace(/(?:(?:^|.*;\s*)city\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        appComponent.defaultSettings.city = document.cookie.replace(/(?:(?:^|.*;\s*)city\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     }
     if (document.cookie.match(/^(.*;)?\s*background\s*=\s*[^;]+(.*)?$/)) {
-        appComponent.defaultSettings.background: document.cookie.replace(/(?:(?:^|.*;\s*)background\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        appComponent.defaultSettings.background = document.cookie.replace(/(?:(?:^|.*;\s*)background\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     }
 
 
