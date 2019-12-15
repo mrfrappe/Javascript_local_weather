@@ -2,37 +2,54 @@
     height: 100%;
 
     .modal-dialog {
-        max-width: 600px;
+        max-width: 800px;
     }
 
-    .modal-content {
+    .modal-content {}
 
-    }
+    .modal-header {}
 
-    .modal-header {
-
-    }
     .modal-body {
-        height: 550px;
+        height: 450px;
+        justify-content: space-around;
         display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-        
+        flex-direction: row;
+
+        padding: 0px 30px;
+
+        &--left {
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        &--right {
+            flex-grow: 99;
+        }
+
 
     }
-    .modal-footer {
 
-    }
+    .modal-footer {}
 
     .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: 0px;
+        margin-left: 0px;
+        width: 100%;
 
         .input-section {
             display: flex;
             justify-content: space-between;
+            width: 300px;
 
             &__label {
-
+                font-weight: bold;
             }
+
             &__input {
 
                 input {
@@ -40,6 +57,7 @@
                 }
             }
         }
+
         .dropdown {
             display: flex;
             justify-content: space-between;
@@ -51,12 +69,21 @@
             }
 
         }
+
         .carousel-section {
             display: flex;
             flex-direction: column;
+            width: 100%;
+            margin-top: 20px;
 
             .carousel {
-                min-height: 280px;;
+                min-height: 300px;
+                
+            }
+
+            span {
+                color: #ccc;
+                padding-top: 20px;
             }
         }
 

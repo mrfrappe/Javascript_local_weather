@@ -8,12 +8,11 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div class="modal-body--left">
 
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8">
+                    <div class="row">
                         <div class="input-section">
-                            <div class="input-section__label"> Choose units</div>
+                            <div class="input-section__label"> Units</div>
                             <div class="input-section__input">
                                 <div class="dropdown">
                                     <button class="btn btn-primary dropdown-toggle" type="button"
@@ -29,11 +28,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8">
+                    <div class="row">
                         <div class="input-section">
                             <div class="input-section__label"> Search city </div>
                             <div class="input-section__input">
@@ -41,11 +36,35 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-2"></div>
+
+                    <div class="row">
+                        <div class="input-section">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="settings-preassure" unchecked>
+                                <label class="form-check-label" for="settings-preassure">Show current preassure</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-section">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="settings-feels-temp" unchecked>
+                                <label class="form-check-label" for="settings-feels-temp">Show feels like temperature</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-section">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="settings-sun" unchecked>
+                                <label class="form-check-label" for="settings-sun">Show sunrise/sunset time</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8">
+
+                <div class="modal-body--right">
+                    <div class="row">
                         <div class="carousel-section">
                             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner">
@@ -62,9 +81,9 @@
                                 </a>
                             </div>
                             <button class="btn btn-primary" data-function="set-background">Set background</button>
+                            <span> <i class="fas fa-info-circle"></i> The wallpaper will be changed after saving the current settings </span>
                         </div>
                     </div>
-                    <div class="col-2"></div>
                 </div>
             </div>
             <div class="modal-footer">
