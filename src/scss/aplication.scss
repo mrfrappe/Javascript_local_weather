@@ -18,7 +18,7 @@ html {
             font-size: 20px;
             font-weight: bold;
             height: 0;
-            margin-left:40px;
+            margin-left: 40px;
         }
     }
 
@@ -49,7 +49,7 @@ html {
         &__wrapper {
             &--header {
                 min-height: 105px;
-                
+
                 .weather-info {
                     &__city {
                         color: #fff;
@@ -81,17 +81,24 @@ html {
                             display: flex;
                             padding-left: 20px;
                             width: 100%;
-                            height: 100%;;
+                            height: 100%;
+                            ;
 
                             &__left {
                                 display: flex;
                                 justify-content: center;
-                                align-items: center;
+                                // align-items: center;
+                                flex-direction: column;
 
                                 &--degree {
                                     color: #fff;
-                                    font-size: 160px;
+                                    font-size: 140px;
                                     font-weight: bold;
+                                    line-height: 140px;
+                                }
+                                &--feels-like {
+                                    color: #fff;
+                                    padding-top: 5px;
                                 }
                             }
 
@@ -99,11 +106,13 @@ html {
                                 margin-top: 50px;
                                 display: flex;
                                 flex-direction: column;
-                                justify-content: baseline;
+                                justify-content: space-around;
                                 align-items: flex-end;
                                 width: 100%;
                                 padding-right: 50px;
+
                             }
+
                             &__header {
                                 display: flex;
 
@@ -111,12 +120,13 @@ html {
                                     display: flex;
                                     color: #fff;
                                     height: 20px;
-                                    font-size: 20px;
+                                    font-size: 16px;
 
                                     i {
                                         color: #fff;
                                         padding-right: 5px;
                                     }
+
                                     &--rain {
                                         width: 125px;
                                         border-right: 1px solid #fff;
@@ -139,6 +149,29 @@ html {
                                         width: 150px;
                                         text-align: center;
                                     }
+
+                                    &--pressure {
+                                        width: 125px;
+                                        border-right: 1px solid #fff;
+                                        text-align: center;
+                                    }
+
+                                    &--wind-degree {
+                                        width: 125px;
+                                        border-right: 1px solid #fff;
+                                        text-align: center;
+                                    }
+
+                                    &--sunrise {
+                                        width: 125px;
+                                        border-right: 1px solid #fff;
+                                        text-align: center;
+                                    }
+
+                                    &--sunset {
+                                        width: 150px;
+                                        text-align: center;
+                                    }
                                 }
 
                             }
@@ -151,27 +184,48 @@ html {
                                     color: #fff;
                                     height: 20px;
                                     font-size: 18px;
-    
+
                                     i {
                                         color: #fff;
                                         padding-right: 5px;
                                     }
+
                                     &--rain {
                                         width: 125px;
                                         text-align: center;
                                     }
-    
+
                                     &--wind {
                                         width: 125px;
                                         text-align: center;
                                     }
-    
+
                                     &--humidity {
                                         width: 125px;
                                         text-align: center;
                                     }
-    
+
                                     &--uv-index {
+                                        width: 150px;
+                                        text-align: center;
+                                    }
+
+                                    &--pressure {
+                                        width: 125px;
+                                        text-align: center;
+                                    }
+
+                                    &--wind-degree {
+                                        width: 125px;
+                                        text-align: center;
+                                    }
+
+                                    &--sunrise {
+                                        width: 125px;
+                                        text-align: center;
+                                    }
+
+                                    &--sunset {
                                         width: 150px;
                                         text-align: center;
                                     }
@@ -206,6 +260,7 @@ html {
                             background: rgba(255, 255, 255, 0.2);
                             border-radius: 10px;
                             margin-right: 10px;
+
                             &--wrapper {
                                 display: flex;
                                 flex-direction: column;
@@ -225,7 +280,8 @@ html {
                             }
 
                             &__body {
-                                display: flex;;
+                                display: flex;
+                                ;
                                 flex-grow: 99;
                                 display: flex;
                                 justify-content: space-around;
@@ -233,20 +289,26 @@ html {
                                 &--degree {
                                     font-size: 50px;
                                     padding-left: 10px;
-                                    font-weight: bold;;
+                                    font-weight: bold;
                                     color: #fff;
                                     display: flex;
                                     align-items: center;
                                 }
+
+  
+
                                 &--icon {
                                     display: flex;
                                     align-items: center;
-                                
+
                                 }
                             }
+
                             &__footer {
                                 flex-grow: 1;
                                 height: 50px;
+                                color: #fff;
+                                margin-left: 10px;
                             }
 
                         }

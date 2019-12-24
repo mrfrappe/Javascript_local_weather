@@ -11,7 +11,8 @@ appComponent.APPID = '3edd02e6040799429c7f443bd7b0f39a'
 appComponent.defaultSettings = {
     unit: 'Celcius',
     city: 'London',
-    background: '../Javascript_local_weather/src/img/background.jpg'
+    background: '../Javascript_local_weather/src/img/background.jpg',
+    customFields: ['pressure', 'wind-deg', 'feels-like', 'sunrise/sunset']
 }
 
 appComponent.init = function () {
@@ -80,6 +81,17 @@ appComponent.appendData = function () {
         $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp * 274.15) + '°K');
     } else {
         $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp * 33.8) + '°F');
+    }
+
+    if ($.inArray("feels-like", appComponent.defaultSettings.customFields) !== -1 && appComponent.objectData.main.feels_like) {
+
+        if (appComponent.defaultSettings.unit === "Celcius") {
+            $('.today-data__left--feels-like').text('Feels like: '  + Math.round(appComponent.objectData.main.feels_like) + '°C');
+        } else if (appComponent.defaultSettings.unit === "Kelvin") {
+            $('.today-data__left--feels-like').text('Feels like: '  + Math.round(appComponent.objectData.main.feels_like * 274.15) + '°K');
+        } else {
+            $('.today-data__left--feels-like').text('Feels like: '  + Math.round(appComponent.objectData.main.feels_like * 33.8) + '°F');
+        }
 
     }
 
@@ -89,14 +101,27 @@ appComponent.appendData = function () {
     appComponent.$main.find('.today-data__header').find('.today-data-details--rain').html('<i class="fas fa-info-circle"></i>' + appComponent.objectData.weather[0].main)
     $details.find('.today-data-details--rain').text(appComponent.objectData.weather[0].description)
 
-
-
     if (appComponent.objectData.wind) {
         $details.find('.today-data-details--wind').text(appComponent.objectData.wind.speed + 'km/h');
     }
 
     if (appComponent.objectData.uvi) {
         $details.find('.today-data-details--uv-index').text(appComponent.objectData.uvi.value)
+    }
+
+    var $bottomDetailsSection = appComponent.$main.find('.tbody__right--bottom').find('.today-data__body');
+    if ($.inArray("pressure", appComponent.defaultSettings.customFields) !== -1 && appComponent.objectData.main.pressure) {
+        $bottomDetailsSection.find('.today-data-details--pressure').text(appComponent.objectData.main.pressure + ' hPa');
+    }
+
+    if ($.inArray("wind-deg", appComponent.defaultSettings.customFields) !== -1 && appComponent.objectData.wind.deg) {
+        $bottomDetailsSection.find('.today-data-details--wind-degree').text(appComponent.objectData.wind.deg + '°');
+    }
+
+    if ($.inArray("sunrise/sunset", appComponent.defaultSettings.customFields) !== -1 && appComponent.objectData.sys.sunrise && appComponent.objectData.sys.sunset) {
+        $bottomDetailsSection.find('.today-data-details--sunrise').text(moment(appComponent.objectData.sys.sunrise, 'X').format("HH:mm"));
+        $bottomDetailsSection.find('.today-data-details--sunset').text(moment(appComponent.objectData.sys.sunset, 'X').format("HH:mm"));
+
     }
 
     // next 5 days
@@ -188,11 +213,24 @@ appComponent.makeDayTile = function (weatherData) {
 
     } else {
         $dayTpl.find('.day-tile__body--degree').text(Math.round(weatherData.main.temp * 33.8) + '°F');
-
-
     }
+
     $dayTpl.find('.day-tile__body--icon').html('<img class="weather-widget__img" src="https://openweathermap.org/img/wn/' + appComponent.objectData.weather[0].icon + '.png" width="50" height="50">');
 
+    if ($.inArray("feels-like", appComponent.defaultSettings.customFields) !== -1 && weatherData.main.feels_like) {
+
+        $dayTpl.find('.day-tile__footer').text()
+        if (appComponent.defaultSettings.unit === "Celcius") {
+            $dayTpl.find('.day-tile__footer').text('Feels like: '  + Math.round(weatherData.main.feels_like) + '°C');
+
+        } else if (appComponent.defaultSettings.unit === "Kelvin") {
+            $dayTpl.find('.day-tile__footer').text('Feels like: '  + Math.round(weatherData.main.feels_like * 274.15) + '°K');
+
+        } else {
+            $dayTpl.find('.day-tile__footer').text('Feels like: '  + Math.round(weatherData.main.feels_like * 33.8) + '°F');
+        }
+
+    }
 
     return $dayTpl
 }
