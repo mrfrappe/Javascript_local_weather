@@ -12,12 +12,15 @@ settingsVC.initView = function (appComponent) {
     settingsVC.newSettings.unit = settingsVC.appComponent.defaultSettings.unit;
     settingsVC.newSettings.city = settingsVC.appComponent.defaultSettings.city;
     settingsVC.newSettings.background = settingsVC.appComponent.defaultSettings.background;
+    settingsVC.newSettings.customFields = settingsVC.appComponent.defaultSettings.customFields;
 
 
     settingsVC.getTpl().then(() => {
         settingsVC.appendData();
 
         settingsVC.getPhotos();
+
+
 
         // set events
 
@@ -41,6 +44,14 @@ settingsVC.initView = function (appComponent) {
             });  
 
         });
+
+        $('#modal-settings').find('.form-check-input').off('click').on('click', function(e){
+            if ($(this).is(':checked')) {
+                settingsVC.newSettings.customFields.push($(this).attr('id'))
+            } else {
+                settingsVC.newSettings.customFields.splice( settingsVC.newSettings.customFields.indexOf($(this).attr('id')), 1 );
+            }
+        })
 
         $('#modal-settings').find('[data-function="set-background"]').off('click').on('click', settingsVC.changeBackground);
 
@@ -103,6 +114,14 @@ settingsVC.appendData = function () {
         }
     })
 
+    
+    $.each($('#modal-settings').find('.form-check-input'), function(index, check){
+        if ($.inArray($(check).attr('id'), settingsVC.appComponent.defaultSettings.customFields) !== -1) {
+            $(check).attr("checked", "checked");
+        }
+
+    });
+
     $('#modal-settings').find('[data-function="current-city"]').val(settingsVC.appComponent.defaultSettings.city)
 };
 
@@ -114,12 +133,6 @@ settingsVC.changeUnit = function (e) {
     settingsVC.newSettings.unit = $(this).text();
 
     $('#modal-settings').find('.dropdown-toggle').text(settingsVC.newSettings.unit);
-};
-
-settingsVC.changeCity = function (e) {
-
-    settingsVC.newSettings.city = $(this).value();
-
 };
 
 settingsVC.changeBackground = function (e) {
@@ -142,19 +155,25 @@ settingsVC.changeBackground = function (e) {
 
 };
 
+
 settingsVC.onSaveClick = function (e) {
 
     settingsVC.appComponent.defaultSettings = settingsVC.newSettings;
+    settingsVC.appComponent.defaultSettings.city = $('#modal-settings').find('[data-function="current-city"]').val();
+    settingsVC.appComponent.firstGeolocationRun = false;
 
-    settingsVC.appComponent.appendData();
+    console.log(settingsVC.appComponent.defaultSettings)
 
+    document.cookie = 'unit=' + settingsVC.newSettings.unit;
+    document.cookie = 'city=' + $('#modal-settings').find('[data-function="current-city"]').val();
+    document.cookie = 'background=' + settingsVC.newSettings.background;
+    document.cookie = 'customFields=' + settingsVC.newSettings.customFields;
 
-    document.cookie = 'unit=' + settingsVC.newSettings.unit 
-    document.cookie = 'city=' + settingsVC.newSettings.city
-    document.cookie = 'background=' + settingsVC.newSettings.background
-
-    
     $('#modal-settings').modal('hide');
+
+    settingsVC.appComponent.init();
+
+
 
 };
 

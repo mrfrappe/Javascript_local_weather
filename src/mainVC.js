@@ -6,16 +6,27 @@ import 'bootstrap';
 var appComponent = {};
 appComponent.objectData = {};
 appComponent.$main = $('.body__wrapper');
-appComponent.APPID = '3edd02e6040799429c7f443bd7b0f39a'
+appComponent.APPID = '3edd02e6040799429c7f443bd7b0f39a';
+appComponent.firstGeolocationRun = true;
+
+var position = {
+    coords: {
+        latitude: '',
+        longitude: ''
+    }
+}
 
 appComponent.defaultSettings = {
     unit: 'Celcius',
     city: 'London',
     background: '../Javascript_local_weather/src/img/background.jpg',
-    customFields: ['pressure', 'wind-deg', 'feels-like', 'sunrise/sunset']
+    customFields: []
 }
 
+console.log(appComponent.defaultSettings)
+
 appComponent.init = function () {
+
 
     if (document.cookie.match(/^(.*;)?\s*unit\s*=\s*[^;]+(.*)?$/)) {
         appComponent.defaultSettings.unit = document.cookie.replace(/(?:(?:^|.*;\s*)unit\s*\=\s*([^;]*).*$)|^.*$/, "$1");
@@ -25,9 +36,18 @@ appComponent.init = function () {
     }
     if (document.cookie.match(/^(.*;)?\s*background\s*=\s*[^;]+(.*)?$/)) {
         appComponent.defaultSettings.background = document.cookie.replace(/(?:(?:^|.*;\s*)background\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+        $('html').css({
+            'background-image': 'url(' + appComponent.defaultSettings.background + ')',
+        });
+    }
+    if (document.cookie.match(/^(.*;)?\s*customFields\s*=\s*[^;]+(.*)?$/)) {
+
+        appComponent.defaultSettings.customFields = document.cookie.replace(/(?:(?:^|.*;\s*)customFields\s*\=\s*([^;]*).*$)|^.*$/, "$1").split(',');
     }
 
-    if (navigator.geolocation) {
+
+    if (appComponent.firstGeolocationRun === true  && navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
 
             var url = "http://api.openweathermap.org/data/2.5/weather?lat=" +
@@ -49,6 +69,26 @@ appComponent.init = function () {
 
             });
         })
+    } else {   
+        var url = "http://api.openweathermap.org/data/2.5/weather?q=" + appComponent.defaultSettings.city + 
+        "&APPID=" + appComponent.APPID + '&units=metric';
+    $.getJSON(url, function (response) {
+
+        position.coords.longitude = response.coord.lon
+        position.coords.latitude = response.coord.lat
+
+        //if success
+        appComponent.objectData = response;
+        appComponent.defaultSettings.city = appComponent.objectData.name;
+
+        appComponent.get5DaysForecast(position).then(() => {
+            appComponent.getUviData(position).then(() => {
+                appComponent.appendData()
+            })
+
+        })
+
+    });
     }
 
     $('[data-function="button-settings"]').off('click').on('click', appComponent.onSettingClick);
@@ -83,7 +123,7 @@ appComponent.appendData = function () {
         $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp * 33.8) + '°F');
     }
 
-    if ($.inArray("feels-like", appComponent.defaultSettings.customFields) !== -1 && appComponent.objectData.main.feels_like) {
+    if ($.inArray("settings-feels-temp", appComponent.defaultSettings.customFields) !== -1 && appComponent.objectData.main.feels_like) {
 
         if (appComponent.defaultSettings.unit === "Celcius") {
             $('.today-data__left--feels-like').text('Feels like: '  + Math.round(appComponent.objectData.main.feels_like) + '°C');
@@ -93,6 +133,8 @@ appComponent.appendData = function () {
             $('.today-data__left--feels-like').text('Feels like: '  + Math.round(appComponent.objectData.main.feels_like * 33.8) + '°F');
         }
 
+    } else {
+        $('.today-data__left--feels-like').text('');
     }
 
     var $details = appComponent.$main.find('.today-data__body');
@@ -109,18 +151,39 @@ appComponent.appendData = function () {
         $details.find('.today-data-details--uv-index').text(appComponent.objectData.uvi.value)
     }
 
+    var $bottomDetailsHeader = appComponent.$main.find('.tbody__right--bottom').find('.today-data__header');
+    $bottomDetailsHeader.css('display', 'none');
+
     var $bottomDetailsSection = appComponent.$main.find('.tbody__right--bottom').find('.today-data__body');
-    if ($.inArray("pressure", appComponent.defaultSettings.customFields) !== -1 && appComponent.objectData.main.pressure) {
+
+    if ($.inArray("settings-preassure", appComponent.defaultSettings.customFields) !== -1 && appComponent.objectData.main.pressure) {
         $bottomDetailsSection.find('.today-data-details--pressure').text(appComponent.objectData.main.pressure + ' hPa');
+
+        $bottomDetailsHeader.css('display', 'flex');
+    } else {
+        $bottomDetailsSection.find('.today-data-details--pressure').text('');
+
     }
 
-    if ($.inArray("wind-deg", appComponent.defaultSettings.customFields) !== -1 && appComponent.objectData.wind.deg) {
+    if ($.inArray("settings-wind-deg", appComponent.defaultSettings.customFields) !== -1 && appComponent.objectData.wind.deg) {
         $bottomDetailsSection.find('.today-data-details--wind-degree').text(appComponent.objectData.wind.deg + '°');
+
+        $bottomDetailsHeader.css('display', 'flex');
+
+    } else {
+        $bottomDetailsSection.find('.today-data-details--wind-degree').text('');
     }
 
-    if ($.inArray("sunrise/sunset", appComponent.defaultSettings.customFields) !== -1 && appComponent.objectData.sys.sunrise && appComponent.objectData.sys.sunset) {
+    if ($.inArray("settings-sun", appComponent.defaultSettings.customFields) !== -1 && appComponent.objectData.sys.sunrise && appComponent.objectData.sys.sunset) {
         $bottomDetailsSection.find('.today-data-details--sunrise').text(moment(appComponent.objectData.sys.sunrise, 'X').format("HH:mm"));
         $bottomDetailsSection.find('.today-data-details--sunset').text(moment(appComponent.objectData.sys.sunset, 'X').format("HH:mm"));
+
+        $bottomDetailsHeader.css('display', 'flex');
+
+    } else {
+        
+        $bottomDetailsSection.find('.today-data-details--sunrise').text('');
+        $bottomDetailsSection.find('.today-data-details--sunset').text('');
 
     }
 
@@ -217,9 +280,8 @@ appComponent.makeDayTile = function (weatherData) {
 
     $dayTpl.find('.day-tile__body--icon').html('<img class="weather-widget__img" src="https://openweathermap.org/img/wn/' + appComponent.objectData.weather[0].icon + '.png" width="50" height="50">');
 
-    if ($.inArray("feels-like", appComponent.defaultSettings.customFields) !== -1 && weatherData.main.feels_like) {
+    if ($.inArray("settings-feels-temp", appComponent.defaultSettings.customFields) !== -1 && weatherData.main.feels_like) {
 
-        $dayTpl.find('.day-tile__footer').text()
         if (appComponent.defaultSettings.unit === "Celcius") {
             $dayTpl.find('.day-tile__footer').text('Feels like: '  + Math.round(weatherData.main.feels_like) + '°C');
 
