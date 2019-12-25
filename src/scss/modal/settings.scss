@@ -1,0 +1,98 @@
+.modal-settings {
+    height: 100%;
+
+    .modal-dialog {
+        max-width: 800px;
+    }
+
+    .modal-content {}
+
+    .modal-header {}
+
+    .modal-body {
+        height: 450px;
+        justify-content: space-around;
+        display: flex;
+        flex-direction: row;
+
+        padding: 0px 30px;
+
+        &--left {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            padding-right: 30px;
+        }
+
+        &--right {
+            flex-grow: 99;
+        }
+
+
+    }
+
+    .modal-footer {}
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: 0px;
+        margin-left: 0px;
+        width: 100%;
+
+        .input-section {
+            display: flex;
+            justify-content: space-between;
+            width: 300px;
+
+            &__label {
+                font-weight: bold;
+            }
+
+            &__input {
+                width: 180px;
+
+                input {
+                    text-align: right;
+                }
+            }
+        }
+
+        .dropdown {
+            display: flex;
+            justify-content: space-between;
+
+            button {
+                width: 178px;
+                height: 30px;
+                line-height: 17px;
+            }
+
+        }
+
+        .carousel-section {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin-top: 20px;
+
+            .carousel {
+                min-height: 330px;
+                
+            }
+            .carousel-item {
+                height: 290px;
+            }
+
+            span {
+                color: #0069D9;
+                padding-top: 20px;
+                cursor: pointer;
+                text-align: center;
+            }
+        }
+
+    }
+}
