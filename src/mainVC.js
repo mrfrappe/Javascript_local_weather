@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import settingsVC from './modals/settingsVC';
+import changeCurrentCityVC from './modals/changeCurrentCityVC';
 import moment from 'moment';
 import 'bootstrap';
 
@@ -23,7 +24,6 @@ appComponent.defaultSettings = {
     customFields: []
 }
 
-console.log(appComponent.defaultSettings)
 
 appComponent.init = function () {
 

@@ -99,6 +99,7 @@ settingsVC.getPhotos = function (e) {
             $('.carousel-inner').append($carouselItem);
         });
 
+        $('.carousel-item').removeClass('active');
         $('.carousel-item').first().addClass('active');
     })
 };

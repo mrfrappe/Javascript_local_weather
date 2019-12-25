@@ -2,7 +2,7 @@ html {
     background-image: url('../src/img/background.jpg');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: auto;
+    background-size: cover;
     height: 100%;
     overflow: hidden;
     font-family: 'Roboto', sans-serif;
@@ -158,6 +158,7 @@ html {
                                         width: 125px;
                                         border-right: 1px solid #fff;
                                         text-align: center;
+
                                     }
 
                                     &--sunrise {
@@ -169,6 +170,9 @@ html {
                                     &--sunset {
                                         width: 150px;
                                         text-align: center;
+                                    }
+                                    .icon {
+                                        height: 35px;
                                     }
                                 }
 
