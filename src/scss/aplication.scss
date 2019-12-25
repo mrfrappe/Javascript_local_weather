@@ -53,6 +53,12 @@ html {
                         color: #fff;
                         font-size: 70px;
                         font-weight: bold;
+
+                        i {
+                            font-size: 20px;
+                            padding-left: 10px;
+                            cursor: pointer;
+                        }
                     }
 
                     &__date {
@@ -94,6 +100,7 @@ html {
                                     font-weight: bold;
                                     line-height: 140px;
                                 }
+
                                 &--feels-like {
                                     color: #fff;
                                     padding-top: 5px;
@@ -171,8 +178,10 @@ html {
                                         width: 150px;
                                         text-align: center;
                                     }
+
                                     .icon {
-                                        height: 35px;
+                                        height: 25px;
+                                        padding-bottom: 6px;
                                     }
                                 }
 
@@ -297,7 +306,7 @@ html {
                                     align-items: center;
                                 }
 
-  
+
 
                                 &--icon {
                                     display: flex;

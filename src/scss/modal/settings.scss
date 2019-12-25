@@ -18,11 +18,12 @@
         padding: 0px 30px;
 
         &--left {
-            width: 400px;
+            width: 300px;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
             align-items: center;
+            padding-right: 30px;
         }
 
         &--right {
@@ -51,6 +52,7 @@
             }
 
             &__input {
+                width: 180px;
 
                 input {
                     text-align: right;
@@ -77,13 +79,18 @@
             margin-top: 20px;
 
             .carousel {
-                min-height: 300px;
+                min-height: 330px;
                 
+            }
+            .carousel-item {
+                height: 290px;
             }
 
             span {
-                color: #ccc;
+                color: #0069D9;
                 padding-top: 20px;
+                cursor: pointer;
+                text-align: center;
             }
         }
 

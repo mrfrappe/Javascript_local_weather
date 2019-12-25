@@ -47,7 +47,7 @@ appComponent.init = function () {
     }
 
 
-    if (appComponent.firstGeolocationRun === true  && navigator.geolocation) {
+    if (appComponent.firstGeolocationRun === true && navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
 
             var url = "http://api.openweathermap.org/data/2.5/weather?lat=" +
@@ -69,26 +69,30 @@ appComponent.init = function () {
 
             });
         })
-    } else {   
-        var url = "http://api.openweathermap.org/data/2.5/weather?q=" + appComponent.defaultSettings.city + 
-        "&APPID=" + appComponent.APPID + '&units=metric';
-    $.getJSON(url, function (response) {
+    } else {
+        var url = "http://api.openweathermap.org/data/2.5/weather?q=" + appComponent.defaultSettings.city +
+            "&APPID=" + appComponent.APPID + '&units=metric';
+        $.getJSON(url, function (response) {}).done(function (response) {
 
-        position.coords.longitude = response.coord.lon
-        position.coords.latitude = response.coord.lat
+            position.coords.longitude = response.coord.lon
+            position.coords.latitude = response.coord.lat
 
-        //if success
-        appComponent.objectData = response;
-        appComponent.defaultSettings.city = appComponent.objectData.name;
+            //if success
+            appComponent.objectData = response;
+            appComponent.defaultSettings.city = appComponent.objectData.name;
 
-        appComponent.get5DaysForecast(position).then(() => {
-            appComponent.getUviData(position).then(() => {
-                appComponent.appendData()
+            appComponent.get5DaysForecast(position).then(() => {
+                appComponent.getUviData(position).then(() => {
+                    appComponent.appendData()
+                })
+
             })
+        }).fail(function (response) {
+            // if (confirm('[ERROR] Wrong city')) {
+                settingsVC.initView(appComponent);
 
-        })
-
-    });
+            // }
+        });
     }
 
     $('[data-function="button-settings"]').off('click').on('click', appComponent.onSettingClick);
@@ -111,7 +115,7 @@ appComponent.appendData = function () {
 
 
     // header info
-    appComponent.$main.find('.weather-info__city').text(appComponent.defaultSettings.city);
+    appComponent.$main.find('.weather-info__city').html(appComponent.defaultSettings.city + '<i class="fas fa-exchange-alt"></i>');
     appComponent.$main.find('.weather-info__date').text(moment().format('MMMM Do'));
 
     // this day data
@@ -126,11 +130,11 @@ appComponent.appendData = function () {
     if ($.inArray("settings-feels-temp", appComponent.defaultSettings.customFields) !== -1 && appComponent.objectData.main.feels_like) {
 
         if (appComponent.defaultSettings.unit === "Celcius") {
-            $('.today-data__left--feels-like').text('Feels like: '  + Math.round(appComponent.objectData.main.feels_like) + '°C');
+            $('.today-data__left--feels-like').text('Feels like: ' + Math.round(appComponent.objectData.main.feels_like) + '°C');
         } else if (appComponent.defaultSettings.unit === "Kelvin") {
-            $('.today-data__left--feels-like').text('Feels like: '  + Math.round(appComponent.objectData.main.feels_like * 274.15) + '°K');
+            $('.today-data__left--feels-like').text('Feels like: ' + Math.round(appComponent.objectData.main.feels_like * 274.15) + '°K');
         } else {
-            $('.today-data__left--feels-like').text('Feels like: '  + Math.round(appComponent.objectData.main.feels_like * 33.8) + '°F');
+            $('.today-data__left--feels-like').text('Feels like: ' + Math.round(appComponent.objectData.main.feels_like * 33.8) + '°F');
         }
 
     } else {
@@ -181,7 +185,7 @@ appComponent.appendData = function () {
         $bottomDetailsHeader.css('display', 'flex');
 
     } else {
-        
+
         $bottomDetailsSection.find('.today-data-details--sunrise').text('');
         $bottomDetailsSection.find('.today-data-details--sunset').text('');
 
@@ -283,13 +287,13 @@ appComponent.makeDayTile = function (weatherData) {
     if ($.inArray("settings-feels-temp", appComponent.defaultSettings.customFields) !== -1 && weatherData.main.feels_like) {
 
         if (appComponent.defaultSettings.unit === "Celcius") {
-            $dayTpl.find('.day-tile__footer').text('Feels like: '  + Math.round(weatherData.main.feels_like) + '°C');
+            $dayTpl.find('.day-tile__footer').text('Feels like: ' + Math.round(weatherData.main.feels_like) + '°C');
 
         } else if (appComponent.defaultSettings.unit === "Kelvin") {
-            $dayTpl.find('.day-tile__footer').text('Feels like: '  + Math.round(weatherData.main.feels_like * 274.15) + '°K');
+            $dayTpl.find('.day-tile__footer').text('Feels like: ' + Math.round(weatherData.main.feels_like * 274.15) + '°K');
 
         } else {
-            $dayTpl.find('.day-tile__footer').text('Feels like: '  + Math.round(weatherData.main.feels_like * 33.8) + '°F');
+            $dayTpl.find('.day-tile__footer').text('Feels like: ' + Math.round(weatherData.main.feels_like * 33.8) + '°F');
         }
 
     }

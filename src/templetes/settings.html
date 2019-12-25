@@ -30,10 +30,16 @@
                     </div>
                     <div class="row">
                         <div class="input-section">
-                            <div class="input-section__label"> Search city </div>
-                            <div class="input-section__input">
+                            <div class="input-section__label"> City </div>
+                            <div class="input-group mb-3 input-section__input">
+                                <input type="text" class="form-control" data-function="current-city" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                  <button class="btn btn-outline-primary" data-function="localize-me" type="button"><i class="fas fa-globe"></i></button>
+                                </div>
+                              </div>
+                            <!-- <div class="input-section__input">
                                 <input type="text" data-function="current-city">
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
@@ -89,7 +95,7 @@
                                 </a>
                             </div>
                             <button class="btn btn-primary" data-function="set-background">Set background</button>
-                            <span> <i class="fas fa-info-circle"></i> The wallpaper will be changed after saving the current settings </span>
+                            <span data-function="default-settings"> Default settings</span>
                         </div>
                     </div>
                 </div>

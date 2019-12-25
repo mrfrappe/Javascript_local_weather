@@ -62,9 +62,62 @@ settingsVC.initView = function (appComponent) {
                 'background-image': 'url(' + settingsVC.appComponent.defaultSettings.background + ')',
             });
         })
+        $('[data-function="default-settings"]').off('click').on('click',settingsVC.setDefaultData);
+
+        $('[data-function="localize-me"]').off('click').on('click', settingsVC.localizeMe);
 
         $('#modal-settings').modal('show');
     });
+
+};
+settingsVC.localizeMe = function () {
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+
+            var url = "http://api.openweathermap.org/data/2.5/weather?lat=" +
+                position.coords.latitude + "&lon=" +
+                position.coords.longitude + "&APPID=" +
+                settingsVC.appComponent.APPID + '&units=metric';
+            $.getJSON(url, function (response) {
+
+                $('[data-function="current-city"]').val(response.name)
+            });
+        })
+    }
+};
+
+settingsVC.setDefaultData = function () {
+    settingsVC.newSettings = {
+        unit: 'Celcius',
+        city: 'London',
+        background: '../Javascript_local_weather/src/img/background.jpg',
+        customFields: []
+    }
+    
+    $('#modal-settings').find('.dropdown-toggle').text(settingsVC.newSettings.unit);
+
+    $.each($('#modal-settings').find('.dropdown-item'), function (index, droppdownItem) {
+        if ($(droppdownItem).text() === settingsVC.newSettings.unit) {
+            $(droppdownItem).addClass('active')
+        }
+    })
+
+    
+    $.each($('#modal-settings').find('.form-check-input'), function(index, check){
+        $(check).prop('checked',false)
+
+    });
+
+    $('#modal-settings').find('[data-function="current-city"]').val(settingsVC.newSettings.city);
+
+    $('html').css({
+        'background-image': 'url(' + settingsVC.newSettings.background + ')',
+    });
+
+};
+
+settingsVC.setEvents = function () {
 
 };
 
@@ -118,7 +171,9 @@ settingsVC.appendData = function () {
     
     $.each($('#modal-settings').find('.form-check-input'), function(index, check){
         if ($.inArray($(check).attr('id'), settingsVC.appComponent.defaultSettings.customFields) !== -1) {
-            $(check).attr("checked", "checked");
+            $(check).prop('checked',true)
+        } else {
+            $(check).prop('checked',false)
         }
 
     });
@@ -163,7 +218,6 @@ settingsVC.onSaveClick = function (e) {
     settingsVC.appComponent.defaultSettings.city = $('#modal-settings').find('[data-function="current-city"]').val();
     settingsVC.appComponent.firstGeolocationRun = false;
 
-    console.log(settingsVC.appComponent.defaultSettings)
 
     document.cookie = 'unit=' + settingsVC.newSettings.unit;
     document.cookie = 'city=' + $('#modal-settings').find('[data-function="current-city"]').val();
