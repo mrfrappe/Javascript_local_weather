@@ -5,6 +5,7 @@ settingsVC.photosCollection = [];
 settingsVC.appComponent = '';
 settingsVC.newSettings = {}
 settingsVC.googleAPI = 'AIzaSyD9GWnu5651bNqfAsdrcc58bmSOGdu4RsQ';
+var autocomplete = null;
 
 settingsVC.initView = function (appComponent) {
     settingsVC.appComponent = appComponent
@@ -30,20 +31,13 @@ settingsVC.initView = function (appComponent) {
             e.target.value = '';
         });
 
-        $('#modal-settings').find('[data-function="current-city"]').off('input').on('input', function (e) {
+        $('.pac-container').remove();
+        var input = document.getElementById('current-city');
+        var options = {
+            types: ['(cities)']
+            };
+        autocomplete = new google.maps.places.Autocomplete(input, options);
 
-            $.ajax({
-                url: 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + e.target.value +
-                '&types=(cities)&language=pt_BR&key=AIzaSyD9GWnu5651bNqfAsdrcc58bmSOGdu4RsQ', 
-                type: "GET",   
-                dataType: 'jsonp',
-                cache: false,
-                success: function(response){                          
-                    alert(response);                   
-                }           
-            });  
-
-        });
 
         $('#modal-settings').find('.form-check-input').off('click').on('click', function(e){
             if ($(this).is(':checked')) {
