@@ -1,0 +1,15 @@
+#change-city-popover {
+
+    .popover-header {
+
+    }
+    .popover-body {
+        padding: 10px 30px;
+
+        &__footer {
+            display: flex;
+            justify-content: space-between;
+        }
+    
+    }
+}

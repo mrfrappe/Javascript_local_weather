@@ -4,7 +4,6 @@ import changeCurrentCity from './modals/changeCurrentCity';
 import moment from 'moment';
 import 'bootstrap';
 
-console.log(changeCurrentCity)
 
 var appComponent = {};
 appComponent.objectData = {};
@@ -28,8 +27,6 @@ appComponent.defaultSettings = {
 
 
 appComponent.init = function () {
-
-    console.log('initialize')
 
 
     if (document.cookie.match(/^(.*;)?\s*unit\s*=\s*[^;]+(.*)?$/)) {
@@ -128,10 +125,10 @@ appComponent.appendData = function () {
         $(this).changeCurrentCity({})
     })
     $('[data-function="change-city-popover"]').changeCurrentCity({
-
+        currentCity: appComponent.defaultSettings,
+        APPID: appComponent.APPID,
+        _onSaveChanges: appComponent.onPopoverChangeCity
     })
-
-    console.log(changeCurrentCity)
 
     // this day data
     if (appComponent.defaultSettings.unit === "Celcius") {
@@ -234,6 +231,14 @@ appComponent.appendData = function () {
 appComponent.onSettingClick = function () {
     settingsVC.initView(appComponent);
 }
+
+appComponent.onPopoverChangeCity= (city) => {
+
+    appComponent.firstGeolocationRun = false;
+
+    appComponent.init();
+
+};
 
 appComponent.get5DaysForecast = function (position) {
 
