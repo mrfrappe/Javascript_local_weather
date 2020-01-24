@@ -117,7 +117,7 @@ appComponent.appendData = function () {
 
 
     // header info
-    appComponent.$main.find('.weather-info__city').html(appComponent.defaultSettings.city + '<i data-function="change-city-popover" class="fas fa-exchange-alt"></i>');
+    appComponent.$main.find('.weather-info__city').html(appComponent.defaultSettings.city + '<i data-function="change-city-popover" class="popover-settings fas fa-exchange-alt"></i>');
     appComponent.$main.find('.weather-info__date').text(moment().format('MMMM Do'));
 
     $('[data-function="change-city-popover"]').click(function(e){
