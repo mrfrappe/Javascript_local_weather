@@ -96,3 +96,9 @@
 
     }
 }
+
+// override google api field
+.pac-container {
+    z-index: 10000;
+    width: 178px !important;
+}

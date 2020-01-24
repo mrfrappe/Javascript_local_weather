@@ -1,8 +1,9 @@
 import $ from 'jquery';
 import settingsVC from './modals/settingsVC';
-import changeCurrentCityVC from './modals/changeCurrentCityVC';
+import changeCurrentCity from './modals/changeCurrentCity';
 import moment from 'moment';
 import 'bootstrap';
+
 
 var appComponent = {};
 appComponent.objectData = {};
@@ -109,14 +110,25 @@ appComponent.init = function () {
         $('.day-tile-group--list').find('.day-tile').last().css('display', 'flex');
 
     })
+
 }
 
 appComponent.appendData = function () {
 
 
     // header info
-    appComponent.$main.find('.weather-info__city').html(appComponent.defaultSettings.city + '<i class="fas fa-exchange-alt"></i>');
+    appComponent.$main.find('.weather-info__city').html(appComponent.defaultSettings.city + '<i data-function="change-city-popover" class="popover-settings fas fa-exchange-alt"></i>');
     appComponent.$main.find('.weather-info__date').text(moment().format('MMMM Do'));
+
+    $('[data-function="change-city-popover"]').click(function(e){
+        console.log('clicked')
+        $(this).changeCurrentCity({})
+    })
+    $('[data-function="change-city-popover"]').changeCurrentCity({
+        currentCity: appComponent.defaultSettings,
+        APPID: appComponent.APPID,
+        _onSaveChanges: appComponent.onPopoverChangeCity
+    })
 
     // this day data
     if (appComponent.defaultSettings.unit === "Celcius") {
@@ -219,6 +231,14 @@ appComponent.appendData = function () {
 appComponent.onSettingClick = function () {
     settingsVC.initView(appComponent);
 }
+
+appComponent.onPopoverChangeCity= (city) => {
+
+    appComponent.firstGeolocationRun = false;
+
+    appComponent.init();
+
+};
 
 appComponent.get5DaysForecast = function (position) {
 

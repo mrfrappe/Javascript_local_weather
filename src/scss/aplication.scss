@@ -74,7 +74,7 @@ html {
 
                 .weather-info {
                     &__today-data {
-                        width: 1040px;
+                        width: 1090px;
                         height: 250px;
                         background: rgba(255, 255, 255, 0.2);
                         border-radius: 10px;
@@ -256,7 +256,7 @@ html {
                         }
 
                         .day-tile-group--arrow {
-                            width: 100px;
+                            width: 200px;
                             display: flex;
                             align-items: center;
                         }
@@ -266,7 +266,7 @@ html {
                         }
 
                         .day-tile {
-                            width: 200px;
+                            width: 170px;
                             height: 150px;
                             background: rgba(255, 255, 255, 0.2);
                             border-radius: 10px;
@@ -341,6 +341,167 @@ html {
 
         }
 
+    }
+
+}
+
+@media only screen and (max-width: 1200px) {
+    .main__body {
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        left: 0;
+    }
+
+    .main .body__wrapper--header {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 100px;
+    }
+
+    .main .body__wrapper--body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main .body__wrapper--body .weather-info__today-data {
+        width: 80%;
+        min-height: 450px;
+    }
+
+    .main .body__wrapper--body .weather-info__week-data {
+        margin: 0 !important;
+        margin-left: 10px;
+
+    }
+
+    .main .body__wrapper--body .weather-info__week-data .day-tile-group--list {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 !important;
+        padding: 0 !important;
+
+    }
+
+    .main .body__wrapper--body .weather-info__week-data .day-tile-group--list.row {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .main .body__wrapper--body .weather-info__week-data .day-tile-group--list.col-lg-10 {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .main .body__wrapper--body .weather-info__today-data .today-data__left {
+        align-items: center;
+        ;
+    }
+
+    .main .body__wrapper--body .weather-info__today-data .today-data__right {
+        margin-top: 0;
+        justify-content: unset;
+        align-items: center;
+        min-height: 150px;
+        display: flex;
+        flex-direction: row;
+        text-align: left;
+    }
+
+    .main .body__wrapper--body .weather-info__today-data .today-data__body {
+        margin-top: 0;
+    }
+
+    .tbody__right--upper {
+        display: flex;
+
+        .today-data-details {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    .tbody__right--bottom {
+        display: flex;
+
+        .today-data-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        // bottom ?
+    }
+
+    .main .body__wrapper--body .weather-info__week-data .day-tile {
+        width: 80%;
+        display: flex;
+        margin-right: 0;
+        margin-top: 10px;
+    }
+
+    .main .body__wrapper--body .weather-info__week-data .day-tile-group--arrow {
+        display: none;
+    }
+
+    .popover-settings {
+        display: none;
+    }
+
+    .main .body__wrapper--body .weather-info__today-data .today-data {
+
+        &__header {
+
+            .today-data-details {
+
+                &--rain,
+                &--wind,
+                &--humidity,
+                &--uv-index,
+                &--pressure,
+                &--wind-degree,
+                &--sunrise,
+                &--sunset {
+                    text-align: left;
+
+                }
+            }
+
+        }
+
+        &__body {
+
+            .today-data-details {
+
+                &--rain,
+                &--wind,
+                &--humidity,
+                &--uv-index,
+                &--pressure,
+                &--wind-degree,
+                &--sunrise,
+                &--sunset {
+                    text-align: left;
+                }
+            }
+        }
+    }
+
+}
+
+@media only screen and (max-width:712px ){
+    .tbody__right--upper  {
+        height: 130px;
+    }
+    .main .body__wrapper--body .weather-info__today-data .today-data__right {
+        flex-direction: column;
+    }
+
+    .main .body__wrapper--body .weather-info__today-data {
+        min-height: 550px;
     }
 
 }
