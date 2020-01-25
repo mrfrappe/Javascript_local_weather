@@ -3,6 +3,9 @@ import settingsVC from './modals/settingsVC';
 import changeCurrentCity from './modals/changeCurrentCity';
 import moment from 'moment';
 import 'bootstrap';
+import dotenv from 'dotenv';
+// require('dotenv').config();
+
 
 
 var appComponent = {};
@@ -34,6 +37,7 @@ appComponent.init = function () {
     }
     if (document.cookie.match(/^(.*;)?\s*city\s*=\s*[^;]+(.*)?$/)) {
         appComponent.defaultSettings.city = document.cookie.replace(/(?:(?:^|.*;\s*)city\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        appComponent.firstGeolocationRun = false;
     }
     if (document.cookie.match(/^(.*;)?\s*background\s*=\s*[^;]+(.*)?$/)) {
         appComponent.defaultSettings.background = document.cookie.replace(/(?:(?:^|.*;\s*)background\s*\=\s*([^;]*).*$)|^.*$/, "$1");
@@ -50,6 +54,7 @@ appComponent.init = function () {
 
     if (appComponent.firstGeolocationRun === true && navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
+
 
             var url = "http://api.openweathermap.org/data/2.5/weather?lat=" +
                 position.coords.latitude + "&lon=" +
@@ -69,8 +74,13 @@ appComponent.init = function () {
                 })
 
             });
+        }, function (err) {
+            alert('[ERROR] Choose city')
+            settingsVC.initView(appComponent);
         })
     } else {
+
+
         var url = "http://api.openweathermap.org/data/2.5/weather?q=" + appComponent.defaultSettings.city +
             "&APPID=" + appComponent.APPID + '&units=metric';
         $.getJSON(url, function (response) {}).done(function (response) {
@@ -90,7 +100,7 @@ appComponent.init = function () {
             })
         }).fail(function (response) {
             // if (confirm('[ERROR] Wrong city')) {
-                settingsVC.initView(appComponent);
+            settingsVC.initView(appComponent);
 
             // }
         });
@@ -120,7 +130,7 @@ appComponent.appendData = function () {
     appComponent.$main.find('.weather-info__city').html(appComponent.defaultSettings.city + '<i data-function="change-city-popover" class="popover-settings fas fa-exchange-alt"></i>');
     appComponent.$main.find('.weather-info__date').text(moment().format('MMMM Do'));
 
-    $('[data-function="change-city-popover"]').click(function(e){
+    $('[data-function="change-city-popover"]').click(function (e) {
         console.log('clicked')
         $(this).changeCurrentCity({})
     })
@@ -133,9 +143,7 @@ appComponent.appendData = function () {
     // this day data
     if (appComponent.defaultSettings.unit === "Celcius") {
         $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp) + '°C');
-    } else if (appComponent.defaultSettings.unit === "Kelvin") {
-        $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp * 274.15) + '°K');
-    } else {
+    } else if (appComponent.defaultSettings.unit === "Kelvin") {} else {
         $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp * 33.8) + '°F');
     }
 
@@ -143,10 +151,10 @@ appComponent.appendData = function () {
 
         if (appComponent.defaultSettings.unit === "Celcius") {
             $('.today-data__left--feels-like').text('Feels like: ' + Math.round(appComponent.objectData.main.feels_like) + '°C');
-        } else if (appComponent.defaultSettings.unit === "Kelvin") {
-            $('.today-data__left--feels-like').text('Feels like: ' + Math.round(appComponent.objectData.main.feels_like * 274.15) + '°K');
         } else {
-            $('.today-data__left--feels-like').text('Feels like: ' + Math.round(appComponent.objectData.main.feels_like * 33.8) + '°F');
+            (appComponent.objectData.main.feels_like === 0) ? $('.today-data__left--feels-like').text('Feels like: ' + 32 + '°F'):
+                $('.today-data__left--feels-like').text('Feels like: ' + Math.round(appComponent.objectData.main.feels_like * 33.8) + '°F');
+
         }
 
     } else {
@@ -232,7 +240,7 @@ appComponent.onSettingClick = function () {
     settingsVC.initView(appComponent);
 }
 
-appComponent.onPopoverChangeCity= (city) => {
+appComponent.onPopoverChangeCity = (city) => {
 
     appComponent.firstGeolocationRun = false;
 
@@ -295,9 +303,6 @@ appComponent.makeDayTile = function (weatherData) {
     if (appComponent.defaultSettings.unit === "Celcius") {
         $dayTpl.find('.day-tile__body--degree').text(Math.round(weatherData.main.temp) + '°C');
 
-    } else if (appComponent.defaultSettings.unit === "Kelvin") {
-        $dayTpl.find('.day-tile__body--degree').text(Math.round(weatherData.main.temp * 274.15) + '°K');
-
     } else {
         $dayTpl.find('.day-tile__body--degree').text(Math.round(weatherData.main.temp * 33.8) + '°F');
     }
@@ -309,11 +314,9 @@ appComponent.makeDayTile = function (weatherData) {
         if (appComponent.defaultSettings.unit === "Celcius") {
             $dayTpl.find('.day-tile__footer').text('Feels like: ' + Math.round(weatherData.main.feels_like) + '°C');
 
-        } else if (appComponent.defaultSettings.unit === "Kelvin") {
-            $dayTpl.find('.day-tile__footer').text('Feels like: ' + Math.round(weatherData.main.feels_like * 274.15) + '°K');
-
         } else {
-            $dayTpl.find('.day-tile__footer').text('Feels like: ' + Math.round(weatherData.main.feels_like * 33.8) + '°F');
+            (weatherData.main.feels_like === 0) ? $dayTpl.find('.day-tile__footer').text('Feels like: ' + 32 + '°F'):
+                $dayTpl.find('.day-tile__footer').text('Feels like: ' + Math.round(weatherData.main.feels_like * 33.8) + '°F');
         }
 
     }

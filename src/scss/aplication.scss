@@ -404,12 +404,13 @@ html {
 
     .main .body__wrapper--body .weather-info__today-data .today-data__right {
         margin-top: 0;
-        justify-content: unset;
+        justify-content: center;
         align-items: center;
         min-height: 150px;
         display: flex;
         flex-direction: row;
         text-align: left;
+        padding-right: 0;
     }
 
     .main .body__wrapper--body .weather-info__today-data .today-data__body {
@@ -426,14 +427,13 @@ html {
     }
 
     .tbody__right--bottom {
-        display: flex;
+        display: none;
 
         .today-data-details {
             display: flex;
             flex-direction: column;
         }
 
-        // bottom ?
     }
 
     .main .body__wrapper--body .weather-info__week-data .day-tile {
@@ -484,10 +484,14 @@ html {
                 &--wind-degree,
                 &--sunrise,
                 &--sunset {
-                    text-align: left;
+                    text-align: right;
                 }
             }
         }
+    }
+    .main .body__wrapper--body .weather-info__today-data .today-data__header .today-data-details--uv-index,
+     .main .body__wrapper--body .weather-info__today-data .today-data__body .today-data-details--uv-index {
+        width: 125px;
     }
 
 }

@@ -140,7 +140,7 @@ settingsVC.getPhotos = function (e) {
 
         $.each(settingsVC.photosCollection, function (index, photo) {
             var $carouselItem = $('<div class="carousel-item">' +
-                '<img src="' + photo.urls.thumb + '" class="d-block w-100" alt="..." data-photo-id="' + photo.id + '">' +
+                '<img src="' + photo.urls.small + '" class="d-block w-100" alt="..." data-photo-id="' + photo.id + '">' +
                 '</div>');
 
             $('.carousel-inner').append($carouselItem);
