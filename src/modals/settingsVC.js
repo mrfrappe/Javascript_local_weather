@@ -3,8 +3,7 @@ import $ from 'jquery';
 var settingsVC = {}
 settingsVC.photosCollection = [];
 settingsVC.appComponent = '';
-settingsVC.newSettings = {}
-settingsVC.googleAPI = 'AIzaSyD9GWnu5651bNqfAsdrcc58bmSOGdu4RsQ';
+settingsVC.newSettings = {};
 var autocomplete = null;
 
 settingsVC.initView = function (appComponent) {
@@ -72,7 +71,7 @@ settingsVC.localizeMe = function () {
             var url = "http://api.openweathermap.org/data/2.5/weather?lat=" +
                 position.coords.latitude + "&lon=" +
                 position.coords.longitude + "&APPID=" +
-                settingsVC.appComponent.APPID + '&units=metric';
+                settingsVC.appComponent.keys.apiOpenWeatherKey + '&units=metric';
             $.getJSON(url, function (response) {
 
                 $('[data-function="current-city"]').val(response.name)
@@ -85,7 +84,7 @@ settingsVC.setDefaultData = function () {
     settingsVC.newSettings = {
         unit: 'Celcius',
         city: 'London',
-        background: '../Javascript_local_weather/src/img/background.jpg',
+        background: './img/background.jpg',
         customFields: []
     }
     
@@ -118,7 +117,7 @@ settingsVC.setEvents = function () {
 settingsVC.getTpl = function () {
     return new Promise((resolve, reject) => {
 
-        $.get('./src/templetes/settings.html', function (response) {
+        $.get('./templetes/settings.html', function (response) {
             $('body').append(response);
             resolve(response)
         })
@@ -127,7 +126,7 @@ settingsVC.getTpl = function () {
 
 settingsVC.getPhotos = function (e) {
 
-    $.getJSON('https://api.unsplash.com/search/photos?query=weather?w=400&h=400&fit=crop&client_id=0be411bbc18eab35251b44718f0590582b0f401b2a3bc6326bf46f16c67dd9b5&orientation=landscape', function (response) {
+    $.getJSON('https://api.unsplash.com/search/photos?query=weather?w=400&h=400&fit=crop&client_id=' + settingsVC.appComponent.keys.apiUnsplashKey + '&orientation=landscape', function (response) {
         //   if error 
         if (response === undefined || response.results.length === 0) {
             return;

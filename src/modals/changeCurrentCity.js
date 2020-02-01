@@ -68,7 +68,7 @@ $.fn.changeCurrentCity = function (options) {
                 var url = "http://api.openweathermap.org/data/2.5/weather?lat=" +
                     position.coords.latitude + "&lon=" +
                     position.coords.longitude + "&APPID=" +
-                   changeCurrentCity.settings.APPID + '&units=metric';
+                   changeCurrentCity.settings.apiOpenWeatherKey + '&units=metric';
                 $.getJSON(url, function (response) {
     
                     $('[data-function="current-city"]').val(response.name)
@@ -131,7 +131,7 @@ $.fn.changeCurrentCity = function (options) {
 
     var defaults = {
         curretCity: "",
-        APPID: "",
+        apiOpenWeatherKey: "",
         $initButton: $(this),
         _onSaveChanges: null,
     };

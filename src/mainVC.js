@@ -3,15 +3,20 @@ import settingsVC from './modals/settingsVC';
 import changeCurrentCity from './modals/changeCurrentCity';
 import moment from 'moment';
 import 'bootstrap';
-import dotenv from 'dotenv';
-// require('dotenv').config();
 
 
 
 var appComponent = {};
 appComponent.objectData = {};
 appComponent.$main = $('.body__wrapper');
-appComponent.APPID = '3edd02e6040799429c7f443bd7b0f39a';
+var keysValue =  JSON.parse($('#data').val());
+
+appComponent.keys = {
+    apiOpenWeatherKey: keysValue.apiOpenWeatherKey,
+    apiUnsplashKey: keysValue.apiUnsplashKey,
+    apiGooglePlacesKey: keysValue.apiGooglePlacesKey,
+}
+
 appComponent.firstGeolocationRun = true;
 
 var position = {
@@ -24,12 +29,14 @@ var position = {
 appComponent.defaultSettings = {
     unit: 'Celcius',
     city: 'London',
-    background: '../Javascript_local_weather/src/img/background.jpg',
+    background: './img/background.jpg',
     customFields: []
 }
 
 
 appComponent.init = function () {
+
+
 
 
     if (document.cookie.match(/^(.*;)?\s*unit\s*=\s*[^;]+(.*)?$/)) {
@@ -59,7 +66,7 @@ appComponent.init = function () {
             var url = "http://api.openweathermap.org/data/2.5/weather?lat=" +
                 position.coords.latitude + "&lon=" +
                 position.coords.longitude + "&APPID=" +
-                appComponent.APPID + '&units=metric';
+                appComponent.keys.apiOpenWeatherKey + '&units=metric';
             $.getJSON(url, function (response) {
 
                 //if success
@@ -82,7 +89,7 @@ appComponent.init = function () {
 
 
         var url = "http://api.openweathermap.org/data/2.5/weather?q=" + appComponent.defaultSettings.city +
-            "&APPID=" + appComponent.APPID + '&units=metric';
+            "&APPID=" + appComponent.keys.apiOpenWeatherKey + '&units=metric';
         $.getJSON(url, function (response) {}).done(function (response) {
 
             position.coords.longitude = response.coord.lon
@@ -136,7 +143,7 @@ appComponent.appendData = function () {
     })
     $('[data-function="change-city-popover"]').changeCurrentCity({
         currentCity: appComponent.defaultSettings,
-        APPID: appComponent.APPID,
+        apiOpenWeatherKey: appComponent.keys.apiOpenWeatherKey,
         _onSaveChanges: appComponent.onPopoverChangeCity
     })
 
@@ -257,7 +264,7 @@ appComponent.get5DaysForecast = function (position) {
         var url = "http://api.openweathermap.org/data/2.5/forecast?lat=" +
             position.coords.latitude + "&lon=" +
             position.coords.longitude + "&APPID=" +
-            appComponent.APPID + '&units=metric';
+            appComponent.keys.apiOpenWeatherKey + '&units=metric';
         $.getJSON(url, function (response) {
 
             //if error 
@@ -281,7 +288,7 @@ appComponent.getUviData = function (position) {
         var url = "http://api.openweathermap.org/data/2.5/uvi?lat=" +
             position.coords.latitude + "&lon=" +
             position.coords.longitude + "&APPID=" +
-            appComponent.APPID + '&units=metric';
+            appComponent.keys.apiOpenWeatherKey + '&units=metric';
         $.getJSON(url, function (response) {
 
             //if success
