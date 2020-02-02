@@ -6,7 +6,7 @@ settingsVC.appComponent = '';
 settingsVC.newSettings = {};
 var autocomplete = null;
 
-settingsVC.initView = function (appComponent) {
+settingsVC.initView =  (appComponent) => {
     settingsVC.appComponent = appComponent
 
     settingsVC.newSettings.unit = settingsVC.appComponent.defaultSettings.unit;
@@ -26,23 +26,25 @@ settingsVC.initView = function (appComponent) {
 
         $('#modal-settings').find('.dropdown-item').off('click').on('click', settingsVC.changeUnit);
 
-        $('#modal-settings').find('[data-function="current-city"]').off('click').on('click', function (e) {
+        $('#modal-settings').find('[data-function="current-city"]').off('click').on('click', (e) =>{
             e.target.value = '';
         });
 
-        $('.pac-container').remove();
-        var input = document.getElementById('current-city');
-        var options = {
-            types: ['(cities)']
-            };
-        autocomplete = new google.maps.places.Autocomplete(input, options);
+        // $('.pac-container').remove();
+        // var input = document.getElementById('current-city');
+        // var options = {
+        //     types: ['(cities)']
+        //     };
+        // autocomplete = new google.maps.places.Autocomplete(input, options);
 
+        
 
-        $('#modal-settings').find('.form-check-input').off('click').on('click', function(e){
-            if ($(this).is(':checked')) {
-                settingsVC.newSettings.customFields.push($(this).attr('id'))
+        $('#modal-settings').find('.form-check-input').off('click').on('click', (e) => {
+            var $this = $(e.target);
+            if ($this.is(':checked')) {
+                settingsVC.newSettings.customFields.push($this.attr('id'))
             } else {
-                settingsVC.newSettings.customFields.splice( settingsVC.newSettings.customFields.indexOf($(this).attr('id')), 1 );
+                settingsVC.newSettings.customFields.splice( settingsVC.newSettings.customFields.indexOf($this.attr('id')), 1 );
             }
         })
 
@@ -50,7 +52,7 @@ settingsVC.initView = function (appComponent) {
 
         $('#modal-settings').find('[data-function="save-settings"').off('click').on('click', settingsVC.onSaveClick);
 
-        $('#modal-settings').on('hidden.bs.modal', function () {
+        $('#modal-settings').on('hidden.bs.modal', () => {
             $('html').css({
                 'background-image': 'url(' + settingsVC.appComponent.defaultSettings.background + ')',
             });
@@ -63,16 +65,16 @@ settingsVC.initView = function (appComponent) {
     });
 
 };
-settingsVC.localizeMe = function () {
+settingsVC.localizeMe = () => {
 
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
+        navigator.geolocation.getCurrentPosition( (position) => {
 
             var url = "http://api.openweathermap.org/data/2.5/weather?lat=" +
                 position.coords.latitude + "&lon=" +
                 position.coords.longitude + "&APPID=" +
                 settingsVC.appComponent.keys.apiOpenWeatherKey + '&units=metric';
-            $.getJSON(url, function (response) {
+            $.getJSON(url, (response) => {
 
                 $('[data-function="current-city"]').val(response.name)
             });
@@ -80,7 +82,7 @@ settingsVC.localizeMe = function () {
     }
 };
 
-settingsVC.setDefaultData = function () {
+settingsVC.setDefaultData = () => {
     settingsVC.newSettings = {
         unit: 'Celcius',
         city: 'London',
@@ -90,14 +92,16 @@ settingsVC.setDefaultData = function () {
     
     $('#modal-settings').find('.dropdown-toggle').text(settingsVC.newSettings.unit);
 
-    $.each($('#modal-settings').find('.dropdown-item'), function (index, droppdownItem) {
+    $.each($('#modal-settings').find('.dropdown-item'), (index, droppdownItem) => {
+
+        console.log( settingsVC.newSettings.unit,droppdownItem)
         if ($(droppdownItem).text() === settingsVC.newSettings.unit) {
             $(droppdownItem).addClass('active')
         }
     })
 
     
-    $.each($('#modal-settings').find('.form-check-input'), function(index, check){
+    $.each($('#modal-settings').find('.form-check-input'), (index, check) => {
         $(check).prop('checked',false)
 
     });
@@ -110,21 +114,18 @@ settingsVC.setDefaultData = function () {
 
 };
 
-settingsVC.setEvents = function () {
 
-};
-
-settingsVC.getTpl = function () {
+settingsVC.getTpl =  () => {
     return new Promise((resolve, reject) => {
 
-        $.get('./templetes/settings.html', function (response) {
+        $.get('./templetes/settings.html', (response) =>{
             $('body').append(response);
             resolve(response)
         })
     })
 }
 
-settingsVC.getPhotos = function (e) {
+settingsVC.getPhotos = (e) =>{
 
     $.getJSON('https://api.unsplash.com/search/photos?query=weather?w=400&h=400&fit=crop&client_id=' + settingsVC.appComponent.keys.apiUnsplashKey + '&orientation=landscape', function (response) {
         //   if error 
@@ -137,7 +138,7 @@ settingsVC.getPhotos = function (e) {
         settingsVC.photosCollection = response.results
 
 
-        $.each(settingsVC.photosCollection, function (index, photo) {
+        $.each(settingsVC.photosCollection, (index, photo) => {
             var $carouselItem = $('<div class="carousel-item">' +
                 '<img src="' + photo.urls.small + '" class="d-block w-100" alt="..." data-photo-id="' + photo.id + '">' +
                 '</div>');
@@ -150,19 +151,19 @@ settingsVC.getPhotos = function (e) {
     })
 };
 
-settingsVC.appendData = function () {
+settingsVC.appendData = () => {
 
 
     $('#modal-settings').find('.dropdown-toggle').text(settingsVC.appComponent.defaultSettings.unit);
 
-    $.each($('#modal-settings').find('.dropdown-item'), function (index, droppdownItem) {
+    $.each($('#modal-settings').find('.dropdown-item'), (index, droppdownItem) => {
         if ($(droppdownItem).text() === settingsVC.appComponent.defaultSettings.unit) {
             $(droppdownItem).addClass('active')
         }
     })
 
     
-    $.each($('#modal-settings').find('.form-check-input'), function(index, check){
+    $.each($('#modal-settings').find('.form-check-input'),(index, check) => {
         if ($.inArray($(check).attr('id'), settingsVC.appComponent.defaultSettings.customFields) !== -1) {
             $(check).prop('checked',true)
         } else {
@@ -174,21 +175,22 @@ settingsVC.appendData = function () {
     $('#modal-settings').find('[data-function="current-city"]').val(settingsVC.appComponent.defaultSettings.city)
 };
 
-settingsVC.changeUnit = function (e) {
+settingsVC.changeUnit = (e) => {
+    var $this = $(e.target);
 
     $('.dropdown-item').removeClass('active');
-    $(this).addClass('active');
+    $this.addClass('active');
 
-    settingsVC.newSettings.unit = $(this).text();
+    settingsVC.newSettings.unit = $this.text();
 
     $('#modal-settings').find('.dropdown-toggle').text(settingsVC.newSettings.unit);
 };
 
-settingsVC.changeBackground = function (e) {
+settingsVC.changeBackground = (e) => {
 
     var photoId = $(this).parent().find('.active').find('img').attr('data-photo-id')
 
-    $.each(settingsVC.photosCollection, function (index, photo) {
+    $.each(settingsVC.photosCollection, (index, photo) => {
 
         if (photo.id === photoId) {
 
@@ -205,17 +207,20 @@ settingsVC.changeBackground = function (e) {
 };
 
 
-settingsVC.onSaveClick = function (e) {
+settingsVC.onSaveClick = (e) => {
 
     settingsVC.appComponent.defaultSettings = settingsVC.newSettings;
     settingsVC.appComponent.defaultSettings.city = $('#modal-settings').find('[data-function="current-city"]').val();
     settingsVC.appComponent.firstGeolocationRun = false;
 
+    var cookieJSON = {
+        unit: settingsVC.newSettings.unit,
+        city:  $('#modal-settings').find('[data-function="current-city"]').val(),
+        background: settingsVC.newSettings.background,
+        customFields: settingsVC.newSettings.customFields
+    }
 
-    document.cookie = 'unit=' + settingsVC.newSettings.unit;
-    document.cookie = 'city=' + $('#modal-settings').find('[data-function="current-city"]').val();
-    document.cookie = 'background=' + settingsVC.newSettings.background;
-    document.cookie = 'customFields=' + settingsVC.newSettings.customFields;
+    document.cookie = 'weatherAppCookie=' +  JSON.stringify(cookieJSON)
 
     $('#modal-settings').modal('hide');
 

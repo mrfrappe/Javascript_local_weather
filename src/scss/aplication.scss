@@ -131,6 +131,9 @@ html {
                                         color: #fff;
                                         padding-right: 5px;
                                     }
+                                    img {
+                                        margin-right: 5px;
+                                    }
 
                                     &--rain {
                                         width: 125px;
@@ -405,7 +408,7 @@ html {
     .main .body__wrapper--body .weather-info__today-data .today-data__right {
         margin-top: 0;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
         min-height: 150px;
         display: flex;
         flex-direction: row;
@@ -505,7 +508,8 @@ html {
     }
 
     .main .body__wrapper--body .weather-info__today-data {
-        min-height: 550px;
+        min-height: 350px;
+        min-width: 300px;
     }
 
 }

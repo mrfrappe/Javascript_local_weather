@@ -9,13 +9,14 @@ import 'bootstrap';
 var appComponent = {};
 appComponent.objectData = {};
 appComponent.$main = $('.body__wrapper');
-var keysValue =  JSON.parse($('#data').val());
+
+var keysValue = JSON.parse($('#data').val());
 
 appComponent.keys = {
     apiOpenWeatherKey: keysValue.apiOpenWeatherKey,
     apiUnsplashKey: keysValue.apiUnsplashKey,
     apiGooglePlacesKey: keysValue.apiGooglePlacesKey,
-}
+};
 
 appComponent.firstGeolocationRun = true;
 
@@ -24,50 +25,31 @@ var position = {
         latitude: '',
         longitude: ''
     }
-}
+};
 
 appComponent.defaultSettings = {
     unit: 'Celcius',
     city: 'London',
     background: './img/background.jpg',
     customFields: []
-}
+};
+
 
 
 appComponent.init = function () {
 
-
-
-
-    if (document.cookie.match(/^(.*;)?\s*unit\s*=\s*[^;]+(.*)?$/)) {
-        appComponent.defaultSettings.unit = document.cookie.replace(/(?:(?:^|.*;\s*)unit\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    }
-    if (document.cookie.match(/^(.*;)?\s*city\s*=\s*[^;]+(.*)?$/)) {
-        appComponent.defaultSettings.city = document.cookie.replace(/(?:(?:^|.*;\s*)city\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-        appComponent.firstGeolocationRun = false;
-    }
-    if (document.cookie.match(/^(.*;)?\s*background\s*=\s*[^;]+(.*)?$/)) {
-        appComponent.defaultSettings.background = document.cookie.replace(/(?:(?:^|.*;\s*)background\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-
-        $('html').css({
-            'background-image': 'url(' + appComponent.defaultSettings.background + ')',
-        });
-    }
-    if (document.cookie.match(/^(.*;)?\s*customFields\s*=\s*[^;]+(.*)?$/)) {
-
-        appComponent.defaultSettings.customFields = document.cookie.replace(/(?:(?:^|.*;\s*)customFields\s*\=\s*([^;]*).*$)|^.*$/, "$1").split(',');
-    }
+    appComponent.getCookieData();
 
 
     if (appComponent.firstGeolocationRun === true && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
+        navigator.geolocation.getCurrentPosition((position) => {
 
 
             var url = "http://api.openweathermap.org/data/2.5/weather?lat=" +
                 position.coords.latitude + "&lon=" +
                 position.coords.longitude + "&APPID=" +
                 appComponent.keys.apiOpenWeatherKey + '&units=metric';
-            $.getJSON(url, function (response) {
+            $.getJSON(url, (response) => {
 
                 //if success
                 appComponent.objectData = response;
@@ -81,7 +63,7 @@ appComponent.init = function () {
                 })
 
             });
-        }, function (err) {
+        }, (err) => {
             alert('[ERROR] Choose city')
             settingsVC.initView(appComponent);
         })
@@ -90,7 +72,7 @@ appComponent.init = function () {
 
         var url = "http://api.openweathermap.org/data/2.5/weather?q=" + appComponent.defaultSettings.city +
             "&APPID=" + appComponent.keys.apiOpenWeatherKey + '&units=metric';
-        $.getJSON(url, function (response) {}).done(function (response) {
+        $.getJSON(url, (response) => {}).done((response) => {
 
             position.coords.longitude = response.coord.lon
             position.coords.latitude = response.coord.lat
@@ -105,7 +87,7 @@ appComponent.init = function () {
                 })
 
             })
-        }).fail(function (response) {
+        }).fail((response) => {
             // if (confirm('[ERROR] Wrong city')) {
             settingsVC.initView(appComponent);
 
@@ -113,32 +95,54 @@ appComponent.init = function () {
         });
     }
 
+    appComponent.setEvents();
+
+};
+
+appComponent.setEvents = () => {
     $('[data-function="button-settings"]').off('click').on('click', appComponent.onSettingClick);
 
-    $('.day-tile-group--left').off('click').on('click', function () {
+    $('.day-tile-group--left').off('click').on('click', () => {
 
         $('.day-tile-group--list').find('.day-tile').last().css('display', 'none');
         $('.day-tile-group--list').find('.day-tile').first().css('display', 'flex');
 
     })
 
-    $('.day-tile-group--right').off('click').on('click', function () {
+    $('.day-tile-group--right').off('click').on('click', () => {
         $('.day-tile-group--list').find('.day-tile').first().css('display', 'none');
         $('.day-tile-group--list').find('.day-tile').last().css('display', 'flex');
 
     })
+};
 
-}
+appComponent.getCookieData = () => {
 
-appComponent.appendData = function () {
+    if (document.cookie.match(/^(.*;)?\s*weatherAppCookie\s*=\s*[^;]+(.*)?$/)) {
+        var cookieJSON = JSON.parse(document.cookie.replace(/(?:(?:^|.*;\s*)weatherAppCookie\s*\=\s*([^;]*).*$)|^.*$/, "$1"));
+
+        $.each(appComponent.defaultSettings, (key, setting) => {
+            appComponent.defaultSettings[key] = cookieJSON[key];
+            if (key === 'city') {
+                appComponent.firstGeolocationRun = false;
+            }
+            if (key === 'background') {
+                $('html').css({
+                    'background-image': 'url(' + appComponent.defaultSettings.background + ')',
+                });
+            }
+        });
+    }
+};
+
+appComponent.appendData = () => {
 
 
     // header info
     appComponent.$main.find('.weather-info__city').html(appComponent.defaultSettings.city + '<i data-function="change-city-popover" class="popover-settings fas fa-exchange-alt"></i>');
     appComponent.$main.find('.weather-info__date').text(moment().format('MMMM Do'));
 
-    $('[data-function="change-city-popover"]').click(function (e) {
-        console.log('clicked')
+    $('[data-function="change-city-popover"]').click((e) => {
         $(this).changeCurrentCity({})
     })
     $('[data-function="change-city-popover"]').changeCurrentCity({
@@ -148,21 +152,13 @@ appComponent.appendData = function () {
     })
 
     // this day data
-    if (appComponent.defaultSettings.unit === "Celcius") {
-        $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp) + '°C');
-    } else if (appComponent.defaultSettings.unit === "Kelvin") {} else {
-        $('.today-data__left--degree').text(Math.round(appComponent.objectData.main.temp * 33.8) + '°F');
-    }
+    appComponent.setTemperature($('.today-data__left--degree'), appComponent.objectData.main.temp, appComponent.defaultSettings.unit);
 
     if ($.inArray("settings-feels-temp", appComponent.defaultSettings.customFields) !== -1 && appComponent.objectData.main.feels_like) {
 
-        if (appComponent.defaultSettings.unit === "Celcius") {
-            $('.today-data__left--feels-like').text('Feels like: ' + Math.round(appComponent.objectData.main.feels_like) + '°C');
-        } else {
-            (appComponent.objectData.main.feels_like === 0) ? $('.today-data__left--feels-like').text('Feels like: ' + 32 + '°F'):
-                $('.today-data__left--feels-like').text('Feels like: ' + Math.round(appComponent.objectData.main.feels_like * 33.8) + '°F');
 
-        }
+        appComponent.setTemperature($('.today-data__left--feels-like'), appComponent.objectData.main.feels_like, appComponent.defaultSettings.unit, "Feels like");
+
 
     } else {
         $('.today-data__left--feels-like').text('');
@@ -221,7 +217,7 @@ appComponent.appendData = function () {
     // next 5 days
     if (appComponent.objectData.forecast) {
 
-        var simpleData = $.grep(appComponent.objectData.forecast, function (weatherData, index) {
+        var simpleData = $.grep(appComponent.objectData.forecast, (weatherData, index) => {
 
             return moment(weatherData.dt_txt).format('HH:mm:ss') == "05:00:00" || moment(weatherData.dt_txt).format('HH:mm:ss') == "06:00:00"
         })
@@ -229,7 +225,7 @@ appComponent.appendData = function () {
         if (simpleData !== []) {
             $('.day-tile-group--list').html('');
 
-            $.each(simpleData, function (index, weatherData) {
+            $.each(simpleData, (index, weatherData) => {
                 var $dayTpl = appComponent.makeDayTile(weatherData);
 
                 $('.day-tile-group--list').append($dayTpl);
@@ -243,9 +239,21 @@ appComponent.appendData = function () {
 
 };
 
-appComponent.onSettingClick = function () {
+appComponent.setTemperature = ($target, value, unit, text) => {
+    var text = (text === undefined) ? '' : text + ' ';
+
+    if (unit === "Celcius") {
+        $target.text(text + Math.round(value) + '°C');
+
+    } else {
+        $target.text(text + Math.round(value * 33.8) + '°F');
+        (value === 0) ? $target.text(text + 32 + '°F'): $target.text(text + Math.round(value * 33.8) + '°F');
+    }
+};
+
+appComponent.onSettingClick = () => {
     settingsVC.initView(appComponent);
-}
+};
 
 appComponent.onPopoverChangeCity = (city) => {
 
@@ -255,7 +263,7 @@ appComponent.onPopoverChangeCity = (city) => {
 
 };
 
-appComponent.get5DaysForecast = function (position) {
+appComponent.get5DaysForecast = (position) => {
 
     return new Promise((resolve, reject) => {
 
@@ -265,7 +273,7 @@ appComponent.get5DaysForecast = function (position) {
             position.coords.latitude + "&lon=" +
             position.coords.longitude + "&APPID=" +
             appComponent.keys.apiOpenWeatherKey + '&units=metric';
-        $.getJSON(url, function (response) {
+        $.getJSON(url, (response) => {
 
             //if error 
             if ('200' !== response.cod) {
@@ -278,9 +286,9 @@ appComponent.get5DaysForecast = function (position) {
         });
     })
 
-}
+};
 
-appComponent.getUviData = function (position) {
+appComponent.getUviData = (position) => {
     return new Promise((resolve, reject) => {
 
         appComponent.objectData.uvi = {};
@@ -289,7 +297,7 @@ appComponent.getUviData = function (position) {
             position.coords.latitude + "&lon=" +
             position.coords.longitude + "&APPID=" +
             appComponent.keys.apiOpenWeatherKey + '&units=metric';
-        $.getJSON(url, function (response) {
+        $.getJSON(url, (response) => {
 
             //if success
             appComponent.objectData.uvi = response;
@@ -300,36 +308,25 @@ appComponent.getUviData = function (position) {
         });
     })
 
-}
+};
 
-appComponent.makeDayTile = function (weatherData) {
+appComponent.makeDayTile = (weatherData) => {
     var $dayTpl = $(appComponent.dayTileTpl);
 
     $dayTpl.find('.day-tile__header').text(moment(weatherData.dt_txt).format('MMMM Do'));
 
-    if (appComponent.defaultSettings.unit === "Celcius") {
-        $dayTpl.find('.day-tile__body--degree').text(Math.round(weatherData.main.temp) + '°C');
-
-    } else {
-        $dayTpl.find('.day-tile__body--degree').text(Math.round(weatherData.main.temp * 33.8) + '°F');
-    }
+    appComponent.setTemperature($dayTpl.find('.day-tile__body--degree'), weatherData.main.temp, appComponent.defaultSettings.unit);
 
     $dayTpl.find('.day-tile__body--icon').html('<img class="weather-widget__img" src="https://openweathermap.org/img/wn/' + appComponent.objectData.weather[0].icon + '.png" width="50" height="50">');
 
     if ($.inArray("settings-feels-temp", appComponent.defaultSettings.customFields) !== -1 && weatherData.main.feels_like) {
 
-        if (appComponent.defaultSettings.unit === "Celcius") {
-            $dayTpl.find('.day-tile__footer').text('Feels like: ' + Math.round(weatherData.main.feels_like) + '°C');
-
-        } else {
-            (weatherData.main.feels_like === 0) ? $dayTpl.find('.day-tile__footer').text('Feels like: ' + 32 + '°F'):
-                $dayTpl.find('.day-tile__footer').text('Feels like: ' + Math.round(weatherData.main.feels_like * 33.8) + '°F');
-        }
+        appComponent.setTemperature($dayTpl.find('.day-tile__footer'), weatherData.main.feels_like, appComponent.defaultSettings.unit, 'Feels like');
 
     }
 
     return $dayTpl
-}
+};
 
 appComponent.dayTileTpl =
     '<div class="day-tile">' +
