@@ -12,7 +12,7 @@ module.exports = {
     './main.js' 
   ],
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'public/static'),
     filename: 'main.bundle.js'
   },
   target: 'node',
@@ -41,7 +41,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin('dist', {} ),
+    new CleanWebpackPlugin('public/static', {} ),
     new MiniCssExtractPlugin({
       filename: 'style.bundle.css',
     }),

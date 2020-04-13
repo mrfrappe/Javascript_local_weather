@@ -1,18 +1,17 @@
 import $ from 'jquery';
-// import 'bootstrap-popover-x';
 var changeCurrentCity = {};
 
 
 $.fn.changeCurrentCity = function (options) {
     
-
-    return this.each(function () {
+return this.each(function () {
         var changeCurrentCity = {};
         changeCurrentCity.$modal = $("#change-city-popover");
-        // console.log($(this))
+
         var instance = $.data(this, 'changeCurrentCity');
         if (instance) {
             // update settings for existing instance and stop
+
             changeCurrentCity = instance;
             $.extend(instance.settings, options);
             changeCurrentCity.init();
@@ -22,12 +21,11 @@ $.fn.changeCurrentCity = function (options) {
             $.data(this, 'changeCurrentCity', changeCurrentCity);
         }
 
-    changeCurrentCity.init = function () {
+    changeCurrentCity.init = () => {
         var autocomplete = null;
         if (changeCurrentCity.settings) {
 
-            // console.log(changeCurrentCity.$modal, changeCurrentCity.settings);
-           (defaults.$initButton).off('click').on('click', function(e) {
+           (defaults.$initButton).off('click').on('click', (e) => {
                
             $('#change-city-popover').remove();
 
@@ -60,16 +58,16 @@ $.fn.changeCurrentCity = function (options) {
 
     };
 
-    changeCurrentCity.localizeMe = function () {
+    changeCurrentCity.localizeMe = () => {
 
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
+            navigator.geolocation.getCurrentPosition( (position) => {
     
                 var url = "http://api.openweathermap.org/data/2.5/weather?lat=" +
                     position.coords.latitude + "&lon=" +
                     position.coords.longitude + "&APPID=" +
-                   changeCurrentCity.settings.APPID + '&units=metric';
-                $.getJSON(url, function (response) {
+                   changeCurrentCity.settings.apiOpenWeatherKey + '&units=metric';
+                $.getJSON(url, (response) => {
     
                     $('[data-function="current-city"]').val(response.name)
                 });
@@ -77,7 +75,7 @@ $.fn.changeCurrentCity = function (options) {
         }
     };
 
-    changeCurrentCity.onCityChange = function () {
+    changeCurrentCity.onCityChange = () => {
 
         var city = $('#change-city-popover').find('[data-function="current-city"]').val();
         document.cookie = 'city=' + city;
@@ -94,7 +92,7 @@ $.fn.changeCurrentCity = function (options) {
 
     };
 
-    changeCurrentCity.onCityCancel = function () {
+    changeCurrentCity.onCityCancel = () => {
         $('#change-city-popover').remove();
     };
 
@@ -131,7 +129,7 @@ $.fn.changeCurrentCity = function (options) {
 
     var defaults = {
         curretCity: "",
-        APPID: "",
+        apiOpenWeatherKey: "",
         $initButton: $(this),
         _onSaveChanges: null,
     };
