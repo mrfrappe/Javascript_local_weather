@@ -5,7 +5,9 @@
         max-width: 800px;
     }
 
-    .modal-content {}
+    .modal-content {
+        background: #f8f8f8;
+    }
 
     .modal-header {}
 
@@ -94,6 +96,19 @@
             }
         }
 
+    }
+}
+
+@media only screen and (max-width: 1200px) { 
+    .modal-settings {
+        .form-check {
+            input {
+                pointer-events: none;;
+            }
+            label {
+                color: #ccc
+            }
+        }
     }
 }
 

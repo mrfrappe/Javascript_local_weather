@@ -1,5 +1,5 @@
 html {
-    background-image: url('../src/img/background.jpg');
+    background-image: url('../img/background.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -130,6 +130,9 @@ html {
                                     i {
                                         color: #fff;
                                         padding-right: 5px;
+                                    }
+                                    img {
+                                        margin-right: 5px;
                                     }
 
                                     &--rain {
@@ -404,12 +407,13 @@ html {
 
     .main .body__wrapper--body .weather-info__today-data .today-data__right {
         margin-top: 0;
-        justify-content: unset;
-        align-items: center;
+        justify-content: center;
+        align-items: flex-start;
         min-height: 150px;
         display: flex;
         flex-direction: row;
         text-align: left;
+        padding-right: 0;
     }
 
     .main .body__wrapper--body .weather-info__today-data .today-data__body {
@@ -426,14 +430,13 @@ html {
     }
 
     .tbody__right--bottom {
-        display: flex;
+        display: none;
 
         .today-data-details {
             display: flex;
             flex-direction: column;
         }
 
-        // bottom ?
     }
 
     .main .body__wrapper--body .weather-info__week-data .day-tile {
@@ -484,10 +487,14 @@ html {
                 &--wind-degree,
                 &--sunrise,
                 &--sunset {
-                    text-align: left;
+                    text-align: right;
                 }
             }
         }
+    }
+    .main .body__wrapper--body .weather-info__today-data .today-data__header .today-data-details--uv-index,
+     .main .body__wrapper--body .weather-info__today-data .today-data__body .today-data-details--uv-index {
+        width: 125px;
     }
 
 }
@@ -501,7 +508,8 @@ html {
     }
 
     .main .body__wrapper--body .weather-info__today-data {
-        min-height: 550px;
+        min-height: 350px;
+        min-width: 300px;
     }
 
 }
